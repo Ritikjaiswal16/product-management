@@ -1,0 +1,40 @@
+.table-card{
+    overflow: hidden;
+    position: relative;
+    border-color: rgb(228, 216, 197)!important;
+}
+.table-search{
+    width: 20%;
+}
+th{
+    vertical-align: middle;
+}
+.pagination{
+    display: flex;
+    justify-content: end;
+    margin-right: 1rem;
+    margin-bottom: 0.2rem;
+}
+.table-heading{
+    font-weight: 300!important;
+    border-bottom: 3px solid rgb(243 244 246);
+}
+.table-row{
+    border-bottom: 2px solid rgb(243 244 246);
+}
+.edit-button{
+    font-weight: 500;
+    cursor: pointer;
+    color:blue;
+    &:hover{
+    text-decoration: underline;
+    }
+}
+.delete-button{
+    font-weight: 500;
+    cursor: pointer;
+    color:red;
+    &:hover{
+        text-decoration: underline;
+    }
+}
