@@ -8,11 +8,6 @@ export const outOfStockMetadata = Object.freeze({
     title: "Products near out of stock"
 })
 
-export const productsMetadata = Object.freeze({
-    totalRecords: 100,
-    title: "Products"
-})
-
 export const headersOfExpiryTable = Object.freeze([
     {
         name: "Product Id",
@@ -47,37 +42,40 @@ export const outofStockHeader = Object.freeze([
     }
 ])
 
-export const productHeader = Object.freeze([
+export const customerHeader = Object.freeze([
     {
-        name: "Product Name",
-        accessorKey: 'product_name',
+        name: "Id",
+        accessorKey: 'customer_id',
     },
     {
-        name: "Product Manufacturer",
-        accessorKey: 'product_manufacturer'
+        name: "Name",
+        accessorKey: 'customer_name',
     },
     {
-        name: "HSN Code",
-        accessorKey: 'product_hsn',
+        name: "Address",
+        accessorKey: 'customer_address'
     },
     {
-        name: "Net Quantity",
-        accessorKey: 'product_net_quantity',
+        name: "GST Number",
+        accessorKey: 'customer_gst',
     },
     {
-        name: "Measure Unit",
-        accessorKey: 'product_measure_unit',
+        name: "Email",
+        accessorKey: 'customer_email',
     },
     {
-        name: "GST %",
-        accessorKey: 'product_gst_percentage',
+        name: "Contact Number",
+        accessorKey: 'customer_contact_number',
     },
     {
-        name: "Selling Price",
-        accessorKey: 'product_sp_gst',
+        name: "Balance",
+        accessorKey: 'customer_balance',
     },
     {
-        name: "Notify Count",
-        accessorKey: 'product_notify_count',
+        name: "Status",
+        accessorKey: 'customer_is_active',
+        onClick: (record) => {
+            return(record.customer_is_active? "Active" :"Disabled")
+        }
     }
 ])

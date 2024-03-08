@@ -3,9 +3,17 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
-import { Card } from "react-bootstrap";
 
 export const ProtectedRoute = () => {
+  const pathname = window.location.pathname;
+  const dict={
+    "/":0,
+    "/invoices":1,
+    "/inventory":2,
+    "/books":3,
+    "/customers":4,
+    "/products":5,
+  }
   const [hovered, setHovered] = useState(false);
     const { token } = useAuth();
   
@@ -20,10 +28,8 @@ export const ProtectedRoute = () => {
     <>
       <TopBar/>
       <div className="container">
-      <SideBar hovered={hovered} setHovered={setHovered}/>
-      {/* <Card className={`body-card ${hovered ? "hovered-width": ""} p-3`}> */}
+      <SideBar index={dict[pathname]} hovered={hovered} setHovered={setHovered}/>
         <Outlet />
-      {/* </Card> */}
       </div>
     </>);
   }

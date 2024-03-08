@@ -3,7 +3,7 @@ import "boxicons";
 import "./SideBar.css";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = ({hovered, setHovered}) => {
+const SideBar = ({index, hovered, setHovered}) => {
   const useMediaQuery = (query) => {
     const [matches, setMatches] = useState(false);
 
@@ -59,7 +59,7 @@ const SideBar = ({hovered, setHovered}) => {
       onClick: () => navigate("/products", {replace: true}),
     },
   ];
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(index);
   const [animate, setAnimate] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const changeSmall = useMediaQuery("(max-height: 550px)");

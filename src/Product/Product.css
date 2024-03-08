@@ -1,3 +1,16 @@
 .product-page{
     width: 90%;
+    justify-content: center;
+}
+.delete-button{
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    color:red !important;
+    &:hover{
+        text-decoration: underline !important;
+    }
+}
+
+.product-table{
+    max-height: 85vh;
 }

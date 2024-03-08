@@ -20,6 +20,9 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
         if (!values.product_measure_unit) {
             errors.product_measure_unit = "Please select one measuring unit of product"
         }
+        if(!values.product_sp_credit){
+            errors.product_sp_credit = "Please provide credit price"
+        }
         if (!values.product_gst_percentage) {
             errors.product_gst_percentage = "Please provide GST number"
         }
@@ -32,12 +35,12 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
         return errors;
     }
 
-    return (<Modal show={showModal} onHide={() => setShowModal(false)}>
+    return (<Modal show={true} onHide={() => setShowModal(null)} size="lg">
         <Modal.Header closeButton>
             <Modal.Title>Add Product</Modal.Title>
         </Modal.Header>
         <Formik
-            initialValues={{product_gst_percentage:18, product_notify_count:5}}
+            initialValues={Object.keys(showModal)?.length ? showModal:{product_gst_percentage:18, product_notify_count:5}}
             validate={validate}
             onSubmit={handleSave}
         >
@@ -98,7 +101,7 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                             </Form.Group>
                             <Form.Group>
                                 <FloatingLabel
-                                    label="HSN Code"
+                                    label="HSN/SAC Code"
                                     className="mb-3"
                                 >
                                     <Form.Control
@@ -116,7 +119,7 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                 </FloatingLabel>
                             </Form.Group>
                             <div className="d-flex gap-3">
-                                <Form.Group>
+                                <Form.Group style={{ "padding-top": "1px", width: "50%" }}>
                                     <FloatingLabel
                                         label="Net Quantity"
                                         className="mb-3"
@@ -156,7 +159,7 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                 </Form.Group>
                             </div>
                             <div className="d-flex gap-3">
-                                <Form.Group>
+                                <Form.Group style={{ "padding-top": "1px", width: "50%" }}>
                                     <FloatingLabel
                                         label="Selling Price (in Rupees)"
                                         className="mb-3"
@@ -175,9 +178,32 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                         </Form.Control.Feedback>
                                     </FloatingLabel>
                                 </Form.Group>
-                                <Form.Group>
+                                <Form.Group style={{ "padding-top": "1px", width: "50%" }}>
                                     <FloatingLabel
-                                        label="GST (in %)"
+                                        label="Credit Price (in Rupees)"
+                                        className="mb-3"
+                                    >
+                                        <Form.Control
+                                            name="product_sp_credit"
+                                            type="number"
+                                            placeholder="90"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            isInvalid={errors.product_sp_credit && touched.product_sp_credit}
+                                            value={values.product_sp_credit}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.product_sp_credit}
+                                        </Form.Control.Feedback>
+                                    </FloatingLabel>
+                                </Form.Group>
+                                
+
+                            </div>
+                            <div className="d-flex gap-3">
+                            <Form.Group style={{ "padding-top": "1px", width: "50%" }}>
+                                    <FloatingLabel
+                                        label="Total GST (in %)"
                                         className="mb-3"
                                     >
                                         <Form.Control
@@ -194,9 +220,7 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                         </Form.Control.Feedback>
                                     </FloatingLabel>
                                 </Form.Group>
-
-                            </div>
-                            <Form.Group>
+                            <Form.Group style={{ "padding-top": "1px", width: "50%" }}>
                                 <FloatingLabel
                                     label="Notify Count"
                                     className="mb-3"
@@ -215,9 +239,10 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
+                            </div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                            <Button variant="secondary" onClick={() => setShowModal(null)}>
                                 Close
                             </Button>
                             <Button variant="primary" type="submit" disabled={!isValid || !dirty}>

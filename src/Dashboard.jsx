@@ -9,6 +9,7 @@ const Dashboard = () => {
     return(
         <div className="d-flex flex-column w-100">
             <CustomTable 
+                className={"m-4"}
                 tableMetadata={metadataOfExpiryTable} 
                 headers={headersOfExpiryTable} 
                 records={recordsOfExpiryTable}
@@ -16,6 +17,7 @@ const Dashboard = () => {
             />
             <hr/>
             <CustomTable 
+                className={"m-4"}
                 tableMetadata={outOfStockMetadata} 
                 headers={outofStockHeader} 
                 records={outofStockTableRecords}

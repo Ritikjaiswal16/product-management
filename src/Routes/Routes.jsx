@@ -5,10 +5,11 @@ import Dashboard from "../Dashboard";
 import { useAuth } from "./AuthProvider";
 import LoginPage from "../LoginPage";
 import Products from "../Product/Products";
+import Customers from "../Customers/Customers";
+import ProductDetails from "../Product/ProductDetails";
 
 const Routes = () => {
   const { token } = useAuth();
-  console.log("Token value", token)
 
   // Define public routes accessible to all users
   const routesForPublic = [
@@ -33,8 +34,8 @@ const Routes = () => {
       element: <ProtectedRoute/>, // Wrap the component in ProtectedRoute
       children: [
         {
-          path: "/",
-          element: <Dashboard/>,
+          path: "/products/:productId",
+          element: <ProductDetails/>,
         },
         {
           path: "/products",
@@ -54,7 +55,7 @@ const Routes = () => {
         },
         {
           path: "/customers",
-          element: <div>Customer</div>,
+          element: <Customers/>,
         },
         {
           path: "/profile",
@@ -63,6 +64,10 @@ const Routes = () => {
         {
           path: "/logout",
           element: <div>Logout</div>,
+        },
+        {
+          path: "/",
+          element: <Dashboard/>,
         },
       ],
     },

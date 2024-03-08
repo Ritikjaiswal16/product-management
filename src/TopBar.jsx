@@ -24,8 +24,8 @@ const TopBar = ()=> {
             <Nav.Link eventKey="link-1" onClick={() => navigate('/contact-us', {replace: true})}>Contact us</Nav.Link>
           </Nav>
           <Nav>
-          <NavDropdown drop="down-centered" className="dropdow-menu pull-right dropdown-menu-end" title="Ritik" align="start" id="collapsible-nav-dropdown">
-              <NavDropdown.Item onClick={() => navigate('/profile', {replace: true})}>My profile</NavDropdown.Item>
+          <NavDropdown align="end" className="dropdow-menu profile" title="Ritik" id="collapsible-nav-dropdown" flip>
+              <NavDropdown.Item onClick={() => navigate('/profile', {replace: true})}>My Profile</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>
                 Logout

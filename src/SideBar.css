@@ -1,15 +1,16 @@
 .sidebar {
-  min-height: 100%;
+  min-height: 92vh;
   height: 100%;
-  width: 4.2rem;
+  min-width: 15rem ;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  transition: 0.3s width;
+  /* transition: 0.3s width; */
   /* margin-top: 16px; */
   padding: 20px;
+  margin-right: 2vw;
 }
 .boxicon-container {
   width: 100%;
@@ -20,7 +21,7 @@
 }
 
 .boxicon {
-  margin: 0.8rem;
+  margin: 1.1rem;
   animation-iteration-count: 1;
   z-index: 2;
 }
@@ -68,20 +69,19 @@
   transform: translateY(-50%);
   left: 4rem;
   z-index: 10;
-  font-weight: bold;
+  font-weight:bold;
+  font-size: medium;
   margin: 0;
   color: black;
   transition: 0.2s opacity;
+  padding-left: 20px;
 }
 
 .active-description {
   color: white;
 }
 
-.expanded {
-  width: 13rem;
-  align-items: flex-start;
-}
+
 
 .show-description {
   opacity: 1;
@@ -97,7 +97,7 @@
   z-index: 100;
   /* margin: 0 auto; */
   align-self: center;
-  font-size: 32px;
+  font-size: 32px ;
 }
 .color-text{
     color: white;

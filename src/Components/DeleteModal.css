@@ -1,0 +1,12 @@
+.delete-modal {
+    border-color: red;
+}
+
+.delete-modal-header.modal-header {
+    background: #dc3545!important;
+    color: white !important;
+}
+
+.delete-modal-body{
+    font-size: 1.3rem;
+}

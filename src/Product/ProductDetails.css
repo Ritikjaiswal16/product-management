@@ -1,0 +1,31 @@
+.product-top-div {
+    overflow: hidden;
+    position: relative;
+    max-width: 91%;
+    max-height: 85vh;
+    width: 100%;
+}
+
+.product-basic-details{
+    background-color: rgba(255, 255, 255, 0.932);
+    border-radius: 20px;
+    padding: 10px;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.product-company {
+    width: 40% !important;
+}
+.product-basic-meta{
+    width: 25% !important;
+}
+.product-card-border{
+    border-radius: 10px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}
+
+.product-history-table{
+    width: 100% !important;
+    height: 54% !important;
+}

@@ -1,7 +1,11 @@
 .table-card{
     overflow: hidden;
     position: relative;
-    border-color: rgb(228, 216, 197)!important;
+    border-color: #e4d8c5!important;
+    /* max-width: 91%; */
+    /* max-height: 85vh; */
+    border-radius: 20px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .table-search{
     width: 20%;
@@ -30,11 +34,12 @@ th{
     text-decoration: underline;
     }
 }
-.delete-button{
-    font-weight: 500;
-    cursor: pointer;
-    color:red;
-    &:hover{
-        text-decoration: underline;
-    }
+
+.table-dropdown-toggle{
+    background: white !important;
+    border: none !important;
+}
+
+.table-dropdown-toggle::after {
+    content: none !important;
 }

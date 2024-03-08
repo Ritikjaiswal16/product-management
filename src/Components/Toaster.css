@@ -1,0 +1,13 @@
+.toaster{
+    border-radius: 1.2rem;
+    margin: 1rem
+}
+.toaster-body{
+    color: white!important;
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+.progress-div{
+    height: 1px;
+    overflow: hidden;
+}
