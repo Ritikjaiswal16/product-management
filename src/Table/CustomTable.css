@@ -1,14 +1,10 @@
 .table-card{
-    overflow: hidden;
     position: relative;
     border-color: #e4d8c5!important;
-    /* max-width: 91%; */
-    /* max-height: 85vh; */
     border-radius: 20px !important;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
-.table-search{
-    width: 20%;
+    height: inherit !important;
+    overflow-y: auto;
 }
 th{
     vertical-align: middle;
@@ -43,3 +39,4 @@ th{
 .table-dropdown-toggle::after {
     content: none !important;
 }
+

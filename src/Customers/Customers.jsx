@@ -8,6 +8,7 @@ import Toaster from "../Components/Toaster";
 import { debounce } from "../Utils/utils";
 import { customerHeader } from "../Utils/TableUtils";
 import AddCustomerModal from "./AddCustomerModal";
+import './Customers.css';
 
 const Customers = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +84,7 @@ const Customers = () => {
     }, [])
 
     return (
-        <div style={{"width": "90%", "justify-content": "center"}}>
+        <div  className="customers-page" style={{ "justify-content": "center"}}>
             {toastInfo && <Toaster variant={toastInfo.type} toastMessage={toastInfo.message} onClose={() => setToastInfo(null)}/>}
             {ShowAddCustomerModal && 
                 <AddCustomerModal 
@@ -101,7 +102,7 @@ const Customers = () => {
                 />
             }
             <CustomTable
-                className={"m-5"}
+                className={"customers-table"}
                 isLoading={isLoading}
                 isError={isError}
                 title={"Customers"}

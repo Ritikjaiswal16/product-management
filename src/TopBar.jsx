@@ -12,7 +12,7 @@ const TopBar = ()=> {
     }
 
     return(
-        <div>
+        <div className="top-bar">
         <Navbar expand="lg" bg="dark" data-bs-theme="dark" className="bg-body-tertiary justify-content-between">
       <Container className="set-max-width">
         <Navbar.Brand className="brand-name" onClick={() => navigate('/', {replace: true})}>Ritik Jaiswal</Navbar.Brand>

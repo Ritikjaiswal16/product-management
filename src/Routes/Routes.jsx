@@ -7,6 +7,7 @@ import LoginPage from "../LoginPage";
 import Products from "../Product/Products";
 import Customers from "../Customers/Customers";
 import ProductDetails from "../Product/ProductDetails";
+import Inventory from "../Inventory/Inventory";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -43,7 +44,7 @@ const Routes = () => {
         },
         {
           path: "/inventory",
-          element: <div>Inventory</div>,
+          element: <Inventory/>,
         },
         {
           path: "/invoices",

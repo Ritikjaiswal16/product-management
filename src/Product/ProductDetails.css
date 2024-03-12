@@ -1,9 +1,10 @@
 .product-top-div {
     overflow: hidden;
     position: relative;
-    max-width: 91%;
+    /* max-width: 91%;
     max-height: 85vh;
-    width: 100%;
+    width: 100%; */
+    height: inherit;
 }
 
 .product-basic-details{
@@ -28,4 +29,19 @@
 .product-history-table{
     width: 100% !important;
     height: 54% !important;
+}
+
+.product-value{
+    font-size: 1.25rem !important;
+    font-weight: bold !important;
+    border-bottom: 1px solid !important;
+}
+.product-value-name{
+    font-size: 2rem !important;
+    font-weight: bolder !important;
+    border-bottom: 1px solid !important;
+}
+.product-edit{
+    width: 6rem;
+    font-size: 18px !important;
 }

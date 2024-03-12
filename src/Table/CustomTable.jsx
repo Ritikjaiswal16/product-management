@@ -81,7 +81,7 @@ const CustomTable = ({
         { !isError &&
         <div className='d-flex gap-4'>
           <div className='d-flex gap-2'>
-            <Form.Control size='sm' className='table-search' type="text" placeholder="Search here" onChange={(e) => handleSearch(e.target.value)}/>
+            <Form.Control size='sm' type="text" placeholder="Search here" onChange={(e) => handleSearch(e.target.value)}/>
           </div>
           {primaryBtnHeader && <Button size='md' className='rounded-3' onClick={primaryBtnHandler}>{primaryBtnHeader}</Button>}
         </div> }

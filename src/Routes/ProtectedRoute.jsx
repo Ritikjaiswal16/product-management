@@ -27,9 +27,11 @@ export const ProtectedRoute = () => {
     return (
     <>
       <TopBar/>
-      <div className="container">
+      <div className="main-container">
       <SideBar index={dict[pathname]} hovered={hovered} setHovered={setHovered}/>
-        <Outlet />
+        <div className="content-body">
+          <Outlet />
+        </div>
       </div>
     </>);
   }

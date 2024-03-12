@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import './ProductDetails.css';
 import SpinnerOverlay from "../Components/SpinnerOverlay";
 import axios from "axios";
 import { getHeaderOptions } from "../Utils/AxiosUtils";
 import { useAuth } from "../Routes/AuthProvider";
 import CustomTable from "../Table/CustomTable";
 import { debounce } from "../Utils/utils";
+import moment from "moment";
+import './ProductDetails.css';
+import { Formik } from "formik";
 
 const ProductDetails = () => {
     const { productId } = useParams();
@@ -17,10 +19,28 @@ const ProductDetails = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [isLoading, setIsLoading] = useState();
     const [isTableLoading, setIsTableLoading] = useState();
+    const [isEditing, setIsEditing] = useState(false);
 
     const setPagination = (number = 1) => {
-        getProducts(number);
+        getProductHistory(number);
         setPageNumber(number);
+    }
+
+    const validateProduct = (values) => {
+        let errors = {};
+        if (!values.product_sp_credit) {
+            errors.product_sp_credit = "Please provide credit price"
+        }
+        if (!values.product_gst_percentage) {
+            errors.product_gst_percentage = "Please provide GST number"
+        }
+        if (!values.product_sp_gst) {
+            errors.product_sp_gst = "Please provide estimated selling price including GST"
+        }
+        if (!values.product_notify_count) {
+            errors.product_notify_count = "Please provide notify count to remind when reach that value"
+        }
+        return errors;
     }
 
     const getProduct = async () => {
@@ -53,8 +73,24 @@ const ProductDetails = () => {
             accessorKey: 'get_change_type_display',
         },
         {
-            name: "Done On",
+            name: "Batch Number",
+            accessorKey: 'batch_number',
+        },
+        {
+            name: "Expiry Date",
+            accessorKey: 'expiry_date',
+            onClick: (value) => {
+                let testDateUtc = moment.utc(value.expiry_date).local();
+                return testDateUtc.format('L');
+            }
+        },
+        {
+            name: "Transaction Date",
             accessorKey: 'date',
+            onClick: (value) => {
+                let testDateUtc = moment.utc(value.date).local();
+                return testDateUtc.format('DD/MM/YYYY, h:m');
+            }
         },
         {
             name: "Description",
@@ -62,16 +98,39 @@ const ProductDetails = () => {
         }
     ])
 
-    const getProductHistory = useCallback(async (pageNumber, searchText) => {
+    const handleSave = async (requestBody) => {
+        const body = {
+            "product_notify_count": requestBody.product_notify_count,
+            "product_gst_percentage": requestBody.product_gst_percentage,
+            "product_sp_gst": requestBody.product_sp_gst,
+            "product_sp_credit": requestBody.product_sp_credit
+        }
         try {
             setIsLoading(true);
-            const response = (await axios.get(`http://192.168.1.13:8000/api/inventory/${productId}`,{ params: { page: pageNumber || 1, search: searchText }, ...getHeaderOptions(token) })).data;
+            console.log("requestBody", requestBody);
+            const response = (await axios.put(`http://192.168.1.13:8000/api/products/${requestBody.product_id}`, body, getHeaderOptions(token))).data;
+            // setToastInfo({type:"success", message:"Product Added successfully."});
+            console.log("Response", response);
+            setProductData((prev) => ({ ...prev, ...response }))
+            setIsEditing(false)
+        } catch (error) {
+            console.log("error", error);
+            // setToastInfo({type:"error", message:"Something went wrong."});
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const getProductHistory = useCallback(async (pageNumber, searchText) => {
+        try {
+            setIsTableLoading(true);
+            const response = (await axios.get(`http://192.168.1.13:8000/api/inventory/${productId}`, { params: { page: pageNumber || 1, search: searchText }, ...getHeaderOptions(token) })).data;
             console.log("Response", response);
             setProductDetail(response);
         } catch (error) {
             console.log("error", error);
         } finally {
-            setIsLoading(false);
+            setIsTableLoading(false);
         }
     }, [])
 
@@ -82,71 +141,150 @@ const ProductDetails = () => {
         getProductHistory();
     }, [])
 
-    return (<div className="product-top-div m-5">
+    return (<div className="product-top-div">
         {isLoading && <SpinnerOverlay />}
         {Object.keys(productData)?.length ? (
             <div className="product-basic-details">
-                <div className="m-3"><h1>{productData.product_name}</h1></div>
-                <div className="d-flex gap-4 m-3 justify-content-start">
-                    <Card className="product-company product-card-border">
-                        <div className="p-3">
-                            <h6 className="fw-normal">Manufactorer</h6>
-                            <h4>{productData.product_manufacturer}</h4>
-                        </div>
-                    </Card>
-                    <Card className="w-25 product-card-border">
-                        <div className="p-3">
-                            <h6 className="fw-normal">HSN Code</h6>
-                            <h4>{productData.product_hsn}</h4>
-                        </div>
-                    </Card>
-                    <Card className="w-25 product-card-border">
-                        <div className="p-3">
-                            <h6 className="fw-normal">Net Quantity</h6>
-                            <h4>{productData.product_net_quantity}</h4>
-                        </div>
-                    </Card>
-                </div>
-                <div className="d-flex gap-4 justify-content-center m-3">
-                    <Card className="product-basic-meta product-card-border">
-                        <div className="p-3">
-                            <h6 className="fw-normal">Selling Price</h6>
-                            <h4>{productData.product_sp_gst}</h4>
-                        </div>
-                    </Card>
-                    <Card className="product-basic-meta product-card-border">
-                        <div className="p-3">
-                            <h6 className="fw-normal">Credit price</h6>
-                            <h4>{productData.product_sp_credit}</h4>
-                        </div>
-                    </Card>
-                    <Card className="product-basic-meta product-card-border">
-                        <div className="p-3">
-                            <h6 className="fw-normal">GST %</h6>
-                            <h4>{productData.product_gst_percentage}</h4>
-                        </div>
-                    </Card>
-                    <Card className="product-basic-meta product-card-border">
-                        <div className="p-3">
-                            <h6 className="fw-normal">Notify Count</h6>
-                            <h4>{productData.product_notify_count}</h4>
-                        </div>
-                    </Card>
-                </div>
+                <Formik
+                    initialValues={productData}
+                    validate={validateProduct}
+                    onSubmit={handleSave}
+                >
+                    {({
+                        values,
+                        errors,
+                        touched,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        isValid,
+                        dirty
+                    }) => (
+                        <>
+                            <Form noValidate onSubmit={handleSubmit}>
+                                <div className="m-3 d-flex justify-content-between">
+                                    <Form.Group>
+                                        <h1>{productData.product_name}</h1>
+                                    </Form.Group>
+                                    { isEditing ?
+                                    <Button className="product-edit rounded-3" onClick={handleSubmit} type="submit" disabled={!isValid || !dirty}>Save</Button>
+                                    : <Button className="product-edit rounded-3" onClick={() => setIsEditing(true)} >Edit</Button>
+                                    }
+                                </div>
+                                <div className="d-flex gap-4 m-3 justify-content-start">
+                                    <Card className="product-company product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">Manufacturer</h6>
+                                            <h4>{productData.product_manufacturer}</h4>
+                                        </div>
+                                    </Card>
+                                    <Card className="w-25 product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">HSN Code</h6>
+                                            <h4>{productData.product_hsn}</h4>
+                                        </div>
+                                    </Card>
+                                    <Card className="w-25 product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">Net Quantity</h6>
+                                            <h4>{productData.product_net_quantity + " " + productData.product_measure_unit}</h4>
+                                        </div>
+                                    </Card>
+                                    <Card className="w-25 product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">Available Unit</h6>
+                                            <h4>{productData.total_count}</h4>
+                                        </div>
+                                    </Card>
+                                </div>
+                                <div className="d-flex gap-4 justify-content-center m-3">
+                                    <Card className="product-basic-meta product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">Selling Price</h6>
+                                            {isEditing ? <><Form.Control
+                                                className="border-0 shadow-none product-value"
+                                                name="product_sp_gst"
+                                                type="number"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                isInvalid={errors.product_sp_gst && touched.product_sp_gst}
+                                                value={values.product_sp_gst}
+                                            />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.product_sp_gst}
+                                                </Form.Control.Feedback></> : <h4>{productData.product_sp_gst}</h4>}
+                                        </div>
+                                    </Card>
+                                    <Card className="product-basic-meta product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">Credit price</h6>
+                                            {isEditing ? <><Form.Control
+                                                className="border-0 shadow-none product-value"
+                                                name="product_sp_credit"
+                                                type="number"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                isInvalid={errors.product_sp_credit && touched.product_sp_credit}
+                                                value={values.product_sp_credit}
+                                            />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.product_sp_credit}
+                                                </Form.Control.Feedback></> : <h4>{productData.product_sp_credit}</h4>}
+                                        </div>
+                                    </Card>
+                                    <Card className="product-basic-meta product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">GST %</h6>
+                                            {isEditing ? <><Form.Control
+                                                className="border-0 shadow-none product-value"
+                                                name="product_gst_percentage"
+                                                type="number"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                isInvalid={errors.product_gst_percentage && touched.product_gst_percentage}
+                                                value={values.product_gst_percentage}
+                                            />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.product_gst_percentage}
+                                                </Form.Control.Feedback></> : <h4>{productData.product_gst_percentage}</h4>}
+                                        </div>
+                                    </Card>
+                                    <Card className="product-basic-meta product-card-border">
+                                        <div className="p-3">
+                                            <h6 className="fw-normal">Notify Count</h6>
+                                            {isEditing ? <><Form.Control
+                                                className="border-0 shadow-none product-value"
+                                                name="product_notify_count"
+                                                type="number"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                isInvalid={errors.product_notify_count && touched.product_notify_count}
+                                                value={values.product_notify_count}
+                                            />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.product_notify_count}
+                                                </Form.Control.Feedback></> : <h4>{productData.product_notify_count}</h4>}
+                                        </div>
+                                    </Card>
+                                </div>
+                            </Form>
+                        </>
+                    )}
+                </Formik>
             </div>
         )
             : null}
-            <CustomTable
-                className={"product-history-table mt-4"}
-                isLoading={isLoading}
-                title={"Product History"}
-                headers={productHistoryHeader}
-                records={productDetail?.results}
-                totalRecords={productDetail?.count}
-                pageNumber={pageNumber}
-                setPageNumber={setPagination}
-                handleSearch={handleSearch}
-            />
+        <CustomTable
+            className={"product-history-table mt-4"}
+            isLoading={isTableLoading}
+            title={"Product History"}
+            headers={productHistoryHeader}
+            records={productDetail?.results}
+            totalRecords={productDetail?.count}
+            pageNumber={pageNumber}
+            setPageNumber={setPagination}
+            handleSearch={handleSearch}
+        />
     </div>)
 }
 

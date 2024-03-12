@@ -2,46 +2,46 @@ import { Formik } from "formik";
 import React from "react";
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 
-const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
-    const validateProduct = (values) => {
+const AddInventoryModal = ({ showModal, setShowModal, handleSave }) => {
+    const validateInventory = (values) => {
         let errors = {};
-        if (!values.product_name) {
-            errors.product_name = "Product Name cannot be empty"
+        if (!values.inventory_name) {
+            errors.inventory_name = "Inventory Name cannot be empty"
         }
-        if (!values.product_net_quantity) {
-            errors.product_net_quantity = "Please provide net quantity of product"
+        if (!values.inventory_net_quantity) {
+            errors.inventory_net_quantity = "Please provide net quantity of inventory"
         }
-        if (!values.product_manufacturer) {
-            errors.product_manufacturer = "Please provide Manufacturer of product"
+        if (!values.inventory_manufacturer) {
+            errors.inventory_manufacturer = "Please provide Manufacturer of inventory"
         }
-        if (!values.product_hsn) {
-            errors.product_hsn = "Please provide HSN code written on product"
+        if (!values.inventory_hsn) {
+            errors.inventory_hsn = "Please provide HSN code written on inventory"
         }
-        if (!values.product_measure_unit) {
-            errors.product_measure_unit = "Please select one measuring unit of product"
+        if (!values.inventory_measure_unit) {
+            errors.inventory_measure_unit = "Please select one measuring unit of inventory"
         }
-        if(!values.product_sp_credit){
-            errors.product_sp_credit = "Please provide credit price"
+        if(!values.inventory_sp_credit){
+            errors.inventory_sp_credit = "Please provide credit price"
         }
-        if (!values.product_gst_percentage) {
-            errors.product_gst_percentage = "Please provide GST number"
+        if (!values.inventory_gst_percentage) {
+            errors.inventory_gst_percentage = "Please provide GST number"
         }
-        if (!values.product_sp_gst) {
-            errors.product_sp_gst = "Please provide estimated selling price including GST"
+        if (!values.inventory_sp_gst) {
+            errors.inventory_sp_gst = "Please provide estimated selling price including GST"
         }
-        if (!values.product_notify_count) {
-            errors.product_notify_count = "Please provide notify count to remind when reach that value"
+        if (!values.inventory_notify_count) {
+            errors.inventory_notify_count = "Please provide notify count to remind when reach that value"
         }
         return errors;
     }
 
     return (<Modal show={true} onHide={() => setShowModal(null)} size="lg">
         <Modal.Header closeButton>
-            <Modal.Title>Add Product</Modal.Title>
+            <Modal.Title>Add Inventory</Modal.Title>
         </Modal.Header>
         <Formik
-            initialValues={Object.keys(showModal)?.length ? showModal:{product_gst_percentage:18, product_notify_count:5}}
-            validate={validateProduct}
+            initialValues={Object.keys(showModal)?.length ? showModal:{inventory_gst_percentage:18, inventory_notify_count:5}}
+            validate={validateInventory}
             onSubmit={handleSave}
         >
             {({
@@ -60,42 +60,42 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                         <Modal.Body>
                             <Form.Group>
                                 <FloatingLabel
-                                    label="Product Name"
+                                    label="Inventory Name"
                                     className="mb-3"
                                 >
                                     <Form.Control
-                                        name="product_name"
+                                        name="inventory_name"
                                         type="text"
-                                        placeholder="some product name"
+                                        placeholder="some inventory name"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        isInvalid={errors.product_name && touched.product_name}
-                                        value={values.product_name}
+                                        isInvalid={errors.inventory_name && touched.inventory_name}
+                                        value={values.inventory_name}
                                         autoFocus
                                     />
 
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.product_name}
+                                        {errors.inventory_name}
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
                             <Form.Group>
                                 <FloatingLabel
-                                    label="Product Manufacturer Name"
+                                    label="Inventory Manufacturer Name"
                                     className="mb-3"
                                 >
                                     <Form.Control
-                                        name="product_manufacturer"
+                                        name="inventory_manufacturer"
                                         type="text"
-                                        placeholder="some product name"
+                                        placeholder="some inventory name"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        isInvalid={errors.product_manufacturer && touched.product_manufacturer}
-                                        value={values.product_manufacturer}
+                                        isInvalid={errors.inventory_manufacturer && touched.inventory_manufacturer}
+                                        value={values.inventory_manufacturer}
                                     />
 
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.product_manufacturer}
+                                        {errors.inventory_manufacturer}
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
@@ -105,16 +105,16 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                     className="mb-3"
                                 >
                                     <Form.Control
-                                        name="product_hsn"
+                                        name="inventory_hsn"
                                         type="text"
                                         placeholder="45HSNU56"
-                                        onChange={(e) => setFieldValue('product_hsn', e.target.value?.toUpperCase())}
+                                        onChange={(e) => setFieldValue('inventory_hsn', e.target.value?.toUpperCase())}
                                         onBlur={handleBlur}
-                                        isInvalid={errors.product_hsn && touched.product_hsn}
-                                        value={values.product_hsn}
+                                        isInvalid={errors.inventory_hsn && touched.inventory_hsn}
+                                        value={values.inventory_hsn}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.product_hsn}
+                                        {errors.inventory_hsn}
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
@@ -125,27 +125,27 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                         className="mb-3"
                                     >
                                         <Form.Control
-                                            name="product_net_quantity"
+                                            name="inventory_net_quantity"
                                             type="number"
                                             placeholder="12"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            isInvalid={errors.product_net_quantity && touched.product_net_quantity}
-                                            value={values.product_net_quantity}
+                                            isInvalid={errors.inventory_net_quantity && touched.inventory_net_quantity}
+                                            value={values.inventory_net_quantity}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.product_net_quantity}
+                                            {errors.inventory_net_quantity}
                                         </Form.Control.Feedback>
                                     </FloatingLabel>
                                 </Form.Group>
                                 <Form.Group style={{ "padding-top": "1px", width: "50%" }}>
                                     <Form.Select
                                         style={{ padding: "15px" }}
-                                        name="product_measure_unit"
+                                        name="inventory_measure_unit"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.product_measure_unit}
-                                        isInvalid={errors.product_measure_unit && touched.product_measure_unit}
+                                        value={values.inventory_measure_unit}
+                                        isInvalid={errors.inventory_measure_unit && touched.inventory_measure_unit}
                                     >
                                         <option className="d-none" selected disabled>Measure Unit</option>
                                         <option value="ml">Milli Liter (ml)</option>
@@ -154,7 +154,7 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                         <option value="kg">Kilogram (kg)</option>`
                                     </Form.Select>
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.product_measure_unit}
+                                        {errors.inventory_measure_unit}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </div>
@@ -165,16 +165,16 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                         className="mb-3"
                                     >
                                         <Form.Control
-                                            name="product_sp_gst"
+                                            name="inventory_sp_gst"
                                             type="number"
                                             placeholder="90"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            isInvalid={errors.product_sp_gst && touched.product_sp_gst}
-                                            value={values.product_sp_gst}
+                                            isInvalid={errors.inventory_sp_gst && touched.inventory_sp_gst}
+                                            value={values.inventory_sp_gst}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.product_sp_gst}
+                                            {errors.inventory_sp_gst}
                                         </Form.Control.Feedback>
                                     </FloatingLabel>
                                 </Form.Group>
@@ -184,16 +184,16 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                         className="mb-3"
                                     >
                                         <Form.Control
-                                            name="product_sp_credit"
+                                            name="inventory_sp_credit"
                                             type="number"
                                             placeholder="90"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            isInvalid={errors.product_sp_credit && touched.product_sp_credit}
-                                            value={values.product_sp_credit}
+                                            isInvalid={errors.inventory_sp_credit && touched.inventory_sp_credit}
+                                            value={values.inventory_sp_credit}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.product_sp_credit}
+                                            {errors.inventory_sp_credit}
                                         </Form.Control.Feedback>
                                     </FloatingLabel>
                                 </Form.Group>
@@ -207,16 +207,16 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                         className="mb-3"
                                     >
                                         <Form.Control
-                                            name="product_gst_percentage"
+                                            name="inventory_gst_percentage"
                                             type="number"
                                             placeholder="9"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            isInvalid={errors.product_gst_percentage && touched.product_gst_percentage}
-                                            value={values.product_gst_percentage}
+                                            isInvalid={errors.inventory_gst_percentage && touched.inventory_gst_percentage}
+                                            value={values.inventory_gst_percentage}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.product_gst_percentage}
+                                            {errors.inventory_gst_percentage}
                                         </Form.Control.Feedback>
                                     </FloatingLabel>
                                 </Form.Group>
@@ -226,16 +226,16 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
                                     className="mb-3"
                                 >
                                     <Form.Control
-                                        name="product_notify_count"
+                                        name="inventory_notify_count"
                                         type="number"
                                         placeholder="90"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        isInvalid={errors.product_notify_count && touched.product_notify_count}
-                                        value={values.product_notify_count}
+                                        isInvalid={errors.inventory_notify_count && touched.inventory_notify_count}
+                                        value={values.inventory_notify_count}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.product_notify_count}
+                                        {errors.inventory_notify_count}
                                     </Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
@@ -256,4 +256,4 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
     </Modal>)
 }
 
-export default AddProductModal;
+export default AddInventoryModal;

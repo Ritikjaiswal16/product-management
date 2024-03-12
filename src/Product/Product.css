@@ -1,6 +1,8 @@
 .product-page{
-    width: 90%;
+    width: 100%;
     justify-content: center;
+    /* height: 100%; */
+    height: inherit !important;
 }
 .delete-button{
     font-weight: 700 !important;
@@ -11,6 +13,3 @@
     }
 }
 
-.product-table{
-    max-height: 85vh;
-}

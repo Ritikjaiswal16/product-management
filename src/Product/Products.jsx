@@ -70,34 +70,34 @@ const Products = () => {
             setIsLoading(true);
             console.log("requestBody", requestBody);
             let response;
-            if(Object.keys(showAddProductModal).length){
+            if (Object.keys(showAddProductModal).length) {
                 response = (await axios.put(`http://192.168.1.13:8000/api/products/${showAddProductModal.product_id}`, requestBody, getHeaderOptions(token))).data;
-                setToastInfo({type:"success", message:"Product updated successfully."});
-            } else{
+                setToastInfo({ type: "success", message: "Product updated successfully." });
+            } else {
                 response = (await axios.post('http://192.168.1.13:8000/api/products', requestBody, getHeaderOptions(token))).data;
-                setToastInfo({type:"success", message:"Product Added successfully."});
+                setToastInfo({ type: "success", message: "Product Added successfully." });
             }
             console.log("Response", response);
             setPagination(1);
             setShowAddProductModal(null);
         } catch (error) {
             console.log("error", error);
-            setToastInfo({type:"error", message:"Something went wrong."});
+            setToastInfo({ type: "error", message: "Something went wrong." });
         } finally {
             setIsLoading(false);
         }
     }
 
     const handleDeleteProduct = async (productId) => {
-        try{
+        try {
             setIsLoading(true);
             await axios.delete(`http://192.168.1.13:8000/api/products/${productId}`, getHeaderOptions(token));
             setPagination(1);
             setShowDeleteModal(null);
-            setToastInfo({type:"success", message:"Product Deleted successfully."});
-        }catch(error){
+            setToastInfo({ type: "success", message: "Product Deleted successfully." });
+        } catch (error) {
             console.log("error", error);
-            setToastInfo({type:"error", message:"Something went wrong."});
+            setToastInfo({ type: "error", message: "Something went wrong." });
         } finally {
             setIsLoading(false);
         }
@@ -106,7 +106,7 @@ const Products = () => {
     const getProducts = useCallback(async (pageNumber, searchText) => {
         try {
             setIsLoading(true);
-            const response = (await axios.get('http://192.168.1.13:8000/api/products',{ params: { page: pageNumber || 1, search: searchText }, ...getHeaderOptions(token) })).data;
+            const response = (await axios.get('http://192.168.1.13:8000/api/products', { params: { page: pageNumber || 1, search: searchText }, ...getHeaderOptions(token) })).data;
             console.log("Response", response);
             setProductDetails(response);
         } catch (error) {
@@ -123,36 +123,36 @@ const Products = () => {
 
     const dropdownOptions = [
         {
-            name:"Edit",
-            onClick:(values) => navigate(`/products/${values.product_id}`, { replace: true })
+            name: "Edit",
+            onClick: (values) => navigate(`/products/${values.product_id}`, { replace: true })
         },
         {
-            name:"Delete",
+            name: "Delete",
             onClick: setShowDeleteModal,
-            className:"delete-button"
+            className: "delete-button"
         },
     ]
 
     return (
         <div className="product-page">
-            {toastInfo && <Toaster variant={toastInfo.type} toastMessage={toastInfo.message} onClose={() => setToastInfo(null)}/>}
-            {showAddProductModal && 
-                <AddProductModal 
-                        showModal={showAddProductModal} 
-                        setShowModal={setShowAddProductModal} 
-                        handleSave={handleSave} 
+            {toastInfo && <Toaster variant={toastInfo.type} toastMessage={toastInfo.message} onClose={() => setToastInfo(null)} />}
+            {showAddProductModal &&
+                <AddProductModal
+                    showModal={showAddProductModal}
+                    setShowModal={setShowAddProductModal}
+                    handleSave={handleSave}
                 />
             }
-            {showDeleteModal && 
-                <DeleteModal 
-                    title={`Delete "${showDeleteModal.product_name}" ?`} 
-                    message={"Are you sure want to delete product?\n Product will be deleted permanently."} 
+            {showDeleteModal &&
+                <DeleteModal
+                    title={`Delete "${showDeleteModal.product_name}" ?`}
+                    message={"Are you sure want to delete product?\n Product will be deleted permanently."}
                     handleCancel={() => setShowDeleteModal(null)}
-                    handleDelete={() => handleDeleteProduct(showDeleteModal.product_id)}  
+                    handleDelete={() => handleDeleteProduct(showDeleteModal.product_id)}
                 />
             }
             <CustomTable
-                className={"product-table m-5"}
+                className={"product-table"}
                 isLoading={isLoading}
                 isError={isError}
                 title={"Products"}
