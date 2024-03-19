@@ -88,7 +88,7 @@ const Customers = () => {
 
     return (
         <div  className="customers-page" style={{ "justify-content": "center"}}>
-            <PasswordLabel/>
+            {/* <PasswordLabel value={"something"}/> */}
             {toastInfo && <Toaster variant={toastInfo.type} toastMessage={toastInfo.message} onClose={() => setToastInfo(null)}/>}
             {ShowAddCustomerModal && 
                 <AddCustomerModal 
