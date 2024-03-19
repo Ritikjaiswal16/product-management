@@ -3,22 +3,23 @@ import CustomTable from "../Table/CustomTable";
 import axios from "axios";
 import { useAuth } from "../Routes/AuthProvider";
 import { getHeaderOptions } from "../Utils/AxiosUtils";
-import DeleteModal from "../Components/DeleteModal";
 import Toaster from "../Components/Toaster";
 import { debounce } from "../Utils/utils";
 import { customerHeader } from "../Utils/TableUtils";
 import AddCustomerModal from "./AddCustomerModal";
 import './Customers.css';
+import { useNavigate } from "react-router-dom";
+import PasswordLabel from "../Components/PasswordLabel";
 
 const Customers = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [ShowAddCustomerModal, setShowAddCustomerModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(null);
     const [toastInfo, setToastInfo] = useState(null);
     const [customerDetails, setCustomerDetails] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
     const { token } = useAuth();
+    const navigate = useNavigate();
 
     const setPagination = (number = 1) => {
         getCustomers(number);
@@ -27,13 +28,12 @@ const Customers = () => {
 
     const handleSearch = useCallback(debounce((value) => getCustomers(1, value)), []);
 
-    const handleSave = async (requestBody) => {
+    const handleSave = async (requestBody, isUpdatingFor) => {
         try {
             setIsLoading(true);
-            console.log("requestBody", requestBody);
             let response;
-            if(Object.keys(ShowAddCustomerModal).length){
-                response = (await axios.put(`http://192.168.1.13:8000/api/customers/${ShowAddCustomerModal.product_id}`, requestBody, getHeaderOptions(token))).data;
+            if((ShowAddCustomerModal && Object.keys(ShowAddCustomerModal)?.length) || isUpdatingFor){
+                response = (await axios.put(`http://192.168.1.13:8000/api/customers/${isUpdatingFor || ShowAddCustomerModal.id}`, requestBody, getHeaderOptions(token))).data;
                 setToastInfo({type:"success", message:"Customer updated successfully."});
             } else{
                 response = (await axios.post('http://192.168.1.13:8000/api/customers', requestBody, getHeaderOptions(token))).data;
@@ -43,21 +43,6 @@ const Customers = () => {
             setPagination(1);
             setShowAddCustomerModal(null);
         } catch (error) {
-            console.log("error", error);
-            setToastInfo({type:"error", message:"Something went wrong."});
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const handleDeleteCustomer = async (id) => {
-        try{
-            setIsLoading(true);
-            await axios.delete(`http://192.168.1.13:8000/api/customers/${id}`, getHeaderOptions(token));
-            setPagination(1);
-            setShowDeleteModal(null);
-            setToastInfo({type:"success", message:"Customer Deleted successfully."});
-        }catch(error){
             console.log("error", error);
             setToastInfo({type:"error", message:"Something went wrong."});
         } finally {
@@ -83,22 +68,33 @@ const Customers = () => {
         getCustomers();
     }, [])
 
+    const dropdownOptions = [
+        {
+            name: "View",
+            onClick: (values) => navigate(`/customers/${values.id}`)
+        },
+        {
+            name: "Active/Disable",
+            onClick: (values) => { 
+                const requestBody = {
+                    ...values,
+                    // customer_contact_number: "912921546",
+                    customer_is_active: !values.customer_is_active
+                }
+                handleSave(requestBody, values.id)
+            }
+        },
+    ]
+
     return (
         <div  className="customers-page" style={{ "justify-content": "center"}}>
+            <PasswordLabel/>
             {toastInfo && <Toaster variant={toastInfo.type} toastMessage={toastInfo.message} onClose={() => setToastInfo(null)}/>}
             {ShowAddCustomerModal && 
                 <AddCustomerModal 
                         showModal={ShowAddCustomerModal} 
                         setShowModal={setShowAddCustomerModal} 
                         handleSave={handleSave} 
-                />
-            }
-            {showDeleteModal && 
-                <DeleteModal 
-                    title={`Delete "${showDeleteModal.id}" ?`} 
-                    message={"Are you sure want to delete product? Product will be deleted permanently."} 
-                    handleCancel={() => setShowDeleteModal(null)}
-                    handleDelete={() => handleDeleteCustomer(showDeleteModal.id)}  
                 />
             }
             <CustomTable
@@ -111,11 +107,10 @@ const Customers = () => {
                 totalRecords={customerDetails?.count}
                 primaryBtnHeader={"Add Customer"}
                 primaryBtnHandler={() => setShowAddCustomerModal({})}
-                handleRecordEdit={(values) => setShowAddCustomerModal(values)}
-                handleDeleteRecord={setShowDeleteModal}
                 pageNumber={pageNumber}
                 setPageNumber={setPagination}
                 handleSearch={handleSearch}
+                dropdownOptions={dropdownOptions}
             />
         </div>
 

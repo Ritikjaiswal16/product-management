@@ -133,7 +133,7 @@ stock
     const dropdownOptions = [
         {
             name:"Edit",
-            onClick:(values) => navigate(`/inventory/${values.inventory_id}`, { replace: true })
+            onClick:(values) => navigate(`/inventory/${values.inventory_id}`)
         },
         {
             name:"Delete",

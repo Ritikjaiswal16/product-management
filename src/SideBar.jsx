@@ -26,37 +26,37 @@ const SideBar = ({index, hovered, setHovered}) => {
       name: "Home",
       iconName: "home",
       type: "solid",
-      onClick: () => navigate("/", {replace: true}),
+      onClick: () => navigate("/"),
     },
     {
       name: "Invoices",
       iconName: "copy",
       type: "solid",
-      onClick: () => navigate("/invoices", {replace: true}),
+      onClick: () => navigate("/invoices"),
     },
     {
       name: "Inventory",
       iconName: "cart-alt",
       type: "solid",
-      onClick: () => navigate("/inventory", {replace: true}),
+      onClick: () => navigate("/inventory"),
     },
     {
       name: "Books",
       iconName: "book",
       type: "solid",
-      onClick: () => navigate("/books", {replace: true}),
+      onClick: () => navigate("/books"),
     },
     {
       name: "Customers",
       iconName: "group",
       type: "solid",
-      onClick: () => navigate("/customers", {replace: true}),
+      onClick: () => navigate("/customers"),
     },
     {
       name: "Products",
       iconName: "package",
       type: "solid",
-      onClick: () => navigate("/products", {replace: true}),
+      onClick: () => navigate("/products"),
     },
   ];
   const [active, setActive] = useState(index);

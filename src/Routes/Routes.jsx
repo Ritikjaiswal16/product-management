@@ -8,6 +8,7 @@ import Products from "../Product/Products";
 import Customers from "../Customers/Customers";
 import ProductDetails from "../Product/ProductDetails";
 import Inventory from "../Inventory/Inventory";
+import CustomerDetails from "../Customers/CustomerDetails";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -41,6 +42,10 @@ const Routes = () => {
         {
           path: "/products",
           element: <Products/>,
+        },
+        {
+          path: "/customers/:customerId",
+          element: <CustomerDetails/>,
         },
         {
           path: "/inventory",

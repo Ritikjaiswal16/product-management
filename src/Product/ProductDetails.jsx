@@ -100,6 +100,7 @@ const ProductDetails = () => {
 
     const handleSave = async (requestBody) => {
         const body = {
+            ...requestBody,
             "product_notify_count": requestBody.product_notify_count,
             "product_gst_percentage": requestBody.product_gst_percentage,
             "product_sp_gst": requestBody.product_sp_gst,
@@ -167,7 +168,7 @@ const ProductDetails = () => {
                                         <h1>{productData.product_name}</h1>
                                     </Form.Group>
                                     { isEditing ?
-                                    <Button className="product-edit rounded-3" onClick={handleSubmit} type="submit" disabled={!isValid || !dirty}>Save</Button>
+                                    <Button className="product-edit rounded-3" onClick={handleSubmit} disabled={!isValid || !dirty}>Save</Button>
                                     : <Button className="product-edit rounded-3" onClick={() => setIsEditing(true)} >Edit</Button>
                                     }
                                 </div>
@@ -193,7 +194,7 @@ const ProductDetails = () => {
                                     <Card className="w-25 product-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Available Unit</h6>
-                                            <h4>{productData.total_count}</h4>
+                                            <h4>{productData.product_total_count}</h4>
                                         </div>
                                     </Card>
                                 </div>

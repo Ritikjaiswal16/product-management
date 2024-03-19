@@ -35,10 +35,6 @@ const Products = () => {
             accessorKey: 'product_manufacturer'
         },
         {
-            name: "HSN/SAC Code",
-            accessorKey: 'product_hsn',
-        },
-        {
             name: "Net Quantity",
             accessorKey: 'product_net_quantity',
             onClick: (value) => {
@@ -58,8 +54,8 @@ const Products = () => {
             accessorKey: 'product_gst_percentage',
         },
         {
-            name: "Notify Count",
-            accessorKey: 'product_notify_count',
+            name: "Total Quantity",
+            accessorKey: 'product_total_count',
         }
     ])
 
@@ -123,8 +119,8 @@ const Products = () => {
 
     const dropdownOptions = [
         {
-            name: "Edit",
-            onClick: (values) => navigate(`/products/${values.product_id}`, { replace: true })
+            name: "View",
+            onClick: (values) => navigate(`/products/${values.product_id}`)
         },
         {
             name: "Delete",

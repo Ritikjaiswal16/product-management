@@ -47,7 +47,7 @@ const CustomTable = ({
               <tr className='table-row'>
                 <td>{(pageNumber-1)*25+index + 1}</td>
                 {headers.map((key) => (
-                  <td>{key.onClick ? key.onClick(record) : (record[key.accessorKey] || (record[key.accessorKey] == 0 ? 0: "-"))}</td>
+                  <td>{key.onClick ? key.onClick(record) : (record[key.accessorKey] || (record[key.accessorKey] === 0 ? 0: "-"))}</td>
                 ))
 
                 }

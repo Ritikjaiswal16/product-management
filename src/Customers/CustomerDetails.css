@@ -1,0 +1,49 @@
+.customer-top-div {
+    overflow: hidden;
+    position: relative;
+    height: inherit;
+}
+
+.customer-basic-details{
+    background-color: rgba(255, 255, 255, 0.932);
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.customer-company {
+    width: 40% !important;
+}
+.customer-basic-meta{
+    width: 25% !important;
+}
+.customer-card-border{
+    border-radius: 10px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}
+
+.customer-history-table{
+    width: 100% !important;
+    height: 54% !important;
+}
+
+.customer-value{
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    border-bottom: 1px solid !important;
+}
+.customer-value-name{
+    font-size: 2rem !important;
+    font-weight: bolder !important;
+    border-bottom: 1px solid !important;
+}
+.customer-value-is-active{
+    font-size: medium;
+}
+.customer-value-address{
+    width: 40% !important;
+}
+.customer-edit{
+    width: 5rem;
+    font-size: 18px !important;
+}
