@@ -194,8 +194,8 @@ const CustomerDetails = () => {
                                             </>
                                             :
                                             <> 
-                                            <Button className="customer-edit rounded-3" onClick={() => setIsEditing(true)} >Edit</Button>
-                                            <Button className="rounded-3" onClick={() => {}}>Statement</Button>
+                                            <Button className="customer-edit rounded- details-button" onClick={() => setIsEditing(true)} >Edit</Button>
+                                            <Button className="rounded-3 details-button" onClick={() => {}}>Statement</Button>
                                             </>
                                         }
                                     </div>
@@ -204,19 +204,19 @@ const CustomerDetails = () => {
                                     <Card className="customer-company customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Id</h6>
-                                            <h6>{customerData.customer_id}</h6>
+                                            <h4>{customerData.customer_id}</h4>
                                         </div>
                                     </Card>
                                     <Card className="w-25 customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Balance</h6>
-                                            <h6>{customerData.customer_balance}</h6>
+                                            <h4>{customerData.customer_balance}</h4>
                                         </div>
                                     </Card>
                                     <Card className="w-25 customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">GST Number</h6>
-                                            <h6>{customerData.customer_gst}</h6>
+                                            <h4>{customerData.customer_gst}</h4>
                                         </div>
                                     </Card>
                                     <Card className="w-25 customer-card-border">
@@ -231,7 +231,7 @@ const CustomerDetails = () => {
                                                 value={values.customer_is_active}
                                                 defaultChecked={values.customer_is_active}
                                             /></> :
-                                                <h6>{customerData.customer_is_active ? "Active" : "Disabled"}</h6>}
+                                                <h4>{customerData.customer_is_active ? "Active" : "Disabled"}</h4>}
                                         </div>
                                     </Card>
                                 </div>
@@ -250,7 +250,7 @@ const CustomerDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.customer_address}
-                                                </Form.Control.Feedback></> : <h6>{customerData.customer_address}</h6>}
+                                                </Form.Control.Feedback></> : <h4>{customerData.customer_address}</h4>}
                                         </div>
                                     </Card>
                                     <Card className="customer-basic-meta customer-card-border">
@@ -267,7 +267,7 @@ const CustomerDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.customer_email}
-                                                </Form.Control.Feedback></> : <h6>{customerData.customer_email}</h6>}
+                                                </Form.Control.Feedback></> : <h4>{customerData.customer_email}</h4>}
                                         </div>
                                     </Card>
                                     <Card className="customer-basic-meta customer-card-border">
@@ -284,7 +284,7 @@ const CustomerDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.customer_contact_number}
-                                                </Form.Control.Feedback></> : <h6>{customerData.customer_contact_number}</h6>}
+                                                </Form.Control.Feedback></> : <h4>{customerData.customer_contact_number}</h4>}
                                         </div>
                                     </Card>
                                 </div>
