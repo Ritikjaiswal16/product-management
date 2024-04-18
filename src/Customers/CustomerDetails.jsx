@@ -201,25 +201,25 @@ const CustomerDetails = () => {
                                     </div>
                                 </div>
                                 <div className="d-flex gap-4 m-3 justify-content-start">
-                                    <Card className="customer-company customer-card-border">
+                                    <div className="customer-company customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Id</h6>
                                             <h4>{customerData.customer_id}</h4>
                                         </div>
-                                    </Card>
-                                    <Card className="w-25 customer-card-border">
+                                    </div>
+                                    <div className="w-25 customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Balance</h6>
                                             <h4>{customerData.customer_balance}</h4>
                                         </div>
-                                    </Card>
-                                    <Card className="w-25 customer-card-border">
+                                    </div>
+                                    <div className="w-25 customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">GST Number</h6>
                                             <h4>{customerData.customer_gst}</h4>
                                         </div>
-                                    </Card>
-                                    <Card className="w-25 customer-card-border">
+                                    </div>
+                                    <div className="w-25 customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Is Active</h6>
                                             {isEditing ? <><Form.Check
@@ -233,10 +233,10 @@ const CustomerDetails = () => {
                                             /></> :
                                                 <h4>{customerData.customer_is_active ? "Active" : "Disabled"}</h4>}
                                         </div>
-                                    </Card>
+                                    </div>
                                 </div>
                                 <div className="d-flex gap-4 justify-content-center m-3">
-                                    <Card className="customer-value-address customer-card-border">
+                                    <div className="customer-value-address customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Adddress</h6>
                                             {isEditing ? <><Form.Control
@@ -252,8 +252,8 @@ const CustomerDetails = () => {
                                                     {errors.customer_address}
                                                 </Form.Control.Feedback></> : <h4>{customerData.customer_address}</h4>}
                                         </div>
-                                    </Card>
-                                    <Card className="customer-basic-meta customer-card-border">
+                                    </div>
+                                    <div className="customer-basic-meta customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Email</h6>
                                             {isEditing ? <><Form.Control
@@ -269,8 +269,8 @@ const CustomerDetails = () => {
                                                     {errors.customer_email}
                                                 </Form.Control.Feedback></> : <h4>{customerData.customer_email}</h4>}
                                         </div>
-                                    </Card>
-                                    <Card className="customer-basic-meta customer-card-border">
+                                    </div>
+                                    <div className="customer-basic-meta customer-card-border">
                                         <div className="p-3">
                                             <h6 className="fw-normal">Contact Number</h6>
                                             {isEditing ? <><Form.Control
@@ -286,7 +286,7 @@ const CustomerDetails = () => {
                                                     {errors.customer_contact_number}
                                                 </Form.Control.Feedback></> : <h4>{customerData.customer_contact_number}</h4>}
                                         </div>
-                                    </Card>
+                                    </div>
                                 </div>
                             </Form>
                         </>

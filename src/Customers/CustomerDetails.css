@@ -6,25 +6,31 @@
 
 .customer-basic-details{
     background-color: rgba(255, 255, 255, 0.932);
-    border-radius: 20px;
+    /* background-color: #f2f3fc; */
+    border-radius: 14px !important;
     padding: 10px;
+    height: 41%;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    overflow-y: auto;
 }
 
 .customer-company {
-    width: 40% !important;
+    width: 41% !important;
 }
 .customer-basic-meta{
     width: 25% !important;
 }
 .customer-card-border{
-    border-radius: 10px !important;
+    background-color: #ffffff;
+    border-radius: 14px !important;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
 }
 
 .customer-history-table{
     width: 100% !important;
     height: 56% !important;
+    /* background-color: #f2f3fc; */
+    border-radius: 14px;
 }
 
 .customer-value{
@@ -47,4 +53,9 @@
     width: 5rem;
     font-size: 18px !important;
 }
+
+
+
+
+
 
