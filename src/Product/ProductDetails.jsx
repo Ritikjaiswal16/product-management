@@ -9,6 +9,7 @@ import CustomTable from "../Table/CustomTable";
 import { debounce } from "../Utils/utils";
 import moment from "moment";
 import './ProductDetails.css';
+import '../DetailsView.css';
 import { Formik } from "formik";
 
 const ProductDetails = () => {
@@ -142,10 +143,10 @@ const ProductDetails = () => {
         getProductHistory();
     }, [])
 
-    return (<div className="product-top-div">
+    return (<div className="top-div">
         {isLoading && <SpinnerOverlay />}
         {Object.keys(productData)?.length ? (
-            <div className="product-basic-details">
+            <div className="basic-details">
                 <Formik
                     initialValues={productData}
                     validate={validateProduct}
@@ -163,46 +164,39 @@ const ProductDetails = () => {
                     }) => (
                         <>
                             <Form noValidate onSubmit={handleSubmit}>
-                                <div className="m-3 d-flex justify-content-between">
+                                <div className="d-flex justify-content-between pb-0 basic-details-heading">
                                     <Form.Group>
-                                        <h1>{productData.product_name}</h1>
+                                        <h4>{productData.product_name}</h4>
                                     </Form.Group>
-                                    { isEditing ?
-                                    <Button className="product-edit rounded-3" onClick={handleSubmit} disabled={!isValid || !dirty}>Save</Button>
-                                    : <Button className="product-edit rounded-3" onClick={() => setIsEditing(true)} >Edit</Button>
+                                    {isEditing ?
+                                        <Button className="product-edit rounded-3" onClick={handleSubmit} disabled={!isValid || !dirty}>Save</Button>
+                                        : <Button className="product-edit rounded-3" onClick={() => setIsEditing(true)} >Edit</Button>
                                     }
                                 </div>
-                                <div className="d-flex gap-4 m-3 justify-content-start">
-                                    <Card className="product-company product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Manufacturer</h6>
-                                            <h4>{productData.product_manufacturer}</h4>
-                                        </div>
-                                    </Card>
-                                    <Card className="w-25 product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">HSN Code</h6>
-                                            <h4>{productData.product_hsn}</h4>
-                                        </div>
-                                    </Card>
-                                    <Card className="w-25 product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Net Quantity</h6>
-                                            <h4>{productData.product_net_quantity + " " + productData.product_measure_unit}</h4>
-                                        </div>
-                                    </Card>
-                                    <Card className="w-25 product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Available Unit</h6>
-                                            <h4>{productData.product_total_count}</h4>
-                                        </div>
-                                    </Card>
-                                </div>
-                                <div className="d-flex gap-4 justify-content-center m-3">
-                                    <Card className="product-basic-meta product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Selling Price</h6>
-                                            {isEditing ? <><Form.Control
+                                <hr></hr> 
+                                <div class="table-responsive-sm">
+                                <table class="table table-borderless">
+                                 <tbody>
+                                    <tr>
+                                    <td class="fw-bolder pb-0">Manufacturer</td>
+                                    <td class="fw-bolder pb-0">HSN Code</td>
+                                    <td class="fw-bolder pb-0"> Net Quantity</td>
+                                    <td class="fw-bolder pb-0">Available Unit</td>
+                                    </tr>
+                                    <tr>
+                                    <td class="pt-0"> {productData.product_manufacturer}</td>
+                                    <td class="pt-0">{productData.product_hsn}</td>
+                                    <td class="pt-0">{productData.product_net_quantity + " " + productData.product_measure_unit}</td>
+                                    <td class="pt-0">{productData.product_total_count}</td>
+                                    </tr>
+                                    <tr>
+                                    <td class="fw-bolder pb-0 pt-3">Selling Price</td>
+                                    <td class="fw-bolder pb-0 pt-3">Credit price</td>
+                                    <td class="fw-bolder pb-0 pt-3">GST %</td>
+                                    <td class="fw-bolder pb-0 pt-3">Notify Count</td>
+                                    </tr>
+                                    <tr>
+                                    <td class="py-0">{isEditing ? <><Form.Control
                                                 className="border-0 shadow-none product-value"
                                                 name="product_sp_gst"
                                                 type="number"
@@ -213,13 +207,8 @@ const ProductDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.product_sp_gst}
-                                                </Form.Control.Feedback></> : <h4>{productData.product_sp_gst}</h4>}
-                                        </div>
-                                    </Card>
-                                    <Card className="product-basic-meta product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Credit price</h6>
-                                            {isEditing ? <><Form.Control
+                                                </Form.Control.Feedback></> : <a>{productData.product_sp_gst}</a> }</td>
+                                    <td class="py-0">{isEditing ? <><Form.Control
                                                 className="border-0 shadow-none product-value"
                                                 name="product_sp_credit"
                                                 type="number"
@@ -230,13 +219,8 @@ const ProductDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.product_sp_credit}
-                                                </Form.Control.Feedback></> : <h4>{productData.product_sp_credit}</h4>}
-                                        </div>
-                                    </Card>
-                                    <Card className="product-basic-meta product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">GST %</h6>
-                                            {isEditing ? <><Form.Control
+                                                </Form.Control.Feedback></> : <a>{productData.product_sp_credit}</a>}</td>
+                                    <td class="py-0">{isEditing ? <><Form.Control
                                                 className="border-0 shadow-none product-value"
                                                 name="product_gst_percentage"
                                                 type="number"
@@ -247,13 +231,8 @@ const ProductDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.product_gst_percentage}
-                                                </Form.Control.Feedback></> : <h4>{productData.product_gst_percentage}</h4>}
-                                        </div>
-                                    </Card>
-                                    <Card className="product-basic-meta product-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Notify Count</h6>
-                                            {isEditing ? <><Form.Control
+                                                </Form.Control.Feedback></> : <a>{productData.product_gst_percentage}</a>}</td>
+                                    <td class="py-0">{isEditing ? <><Form.Control
                                                 className="border-0 shadow-none product-value"
                                                 name="product_notify_count"
                                                 type="number"
@@ -264,10 +243,13 @@ const ProductDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.product_notify_count}
-                                                </Form.Control.Feedback></> : <h4>{productData.product_notify_count}</h4>}
-                                        </div>
-                                    </Card>
+                                                </Form.Control.Feedback></> : <a>{productData.product_notify_count}</a>}</td>
+                                    </tr>
+                                </tbody>
+                                </table>
                                 </div>
+                           
+
                             </Form>
                         </>
                     )}
@@ -276,7 +258,7 @@ const ProductDetails = () => {
         )
             : null}
         <CustomTable
-            className={"product-history-table mt-4"}
+            className={"history-table"}
             isLoading={isTableLoading}
             title={"Product History"}
             headers={productHistoryHeader}

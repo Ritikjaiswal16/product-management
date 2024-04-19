@@ -9,6 +9,7 @@ import CustomTable from "../Table/CustomTable";
 import { debounce } from "../Utils/utils";
 import moment from "moment";
 import './CustomerDetails.css';
+import '../DetailsView.css';
 import { Formik } from "formik";
 import AddCustomerHistoryModal from "./AddCustomerHistoryModal";
 
@@ -149,10 +150,10 @@ const CustomerDetails = () => {
         getCustomerHistory();
     }, [])
 
-    return (<div className="customer-top-div">
+    return (<div className="top-div">
         {isLoading && <SpinnerOverlay />}
         {Object.keys(customerData)?.length ? (
-            <div className="customer-basic-details">
+            <div className="basic-details">
                 <Formik
                     initialValues={customerData}
                     validate={validateCustomer}
@@ -170,7 +171,7 @@ const CustomerDetails = () => {
                     }) => (
                         <>
                             <Form noValidate onSubmit={handleSubmit}>
-                                <div className="m-3 d-flex justify-content-between">
+                                <div className="d-flex justify-content-between pb-0 basic-details-heading">
                                     <Form.Group>
                                         {isEditing ? <><Form.Control
                                             className="border-0 shadow-none customer-value-name"
@@ -183,7 +184,7 @@ const CustomerDetails = () => {
                                         />
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.customer_name}
-                                            </Form.Control.Feedback></> : <h1>{customerData.customer_name}</h1>}
+                                            </Form.Control.Feedback></> : <h4>{customerData.customer_name}</h4>}
 
                                     </Form.Group>
                                     <div className="d-flex gap-4">
@@ -200,29 +201,22 @@ const CustomerDetails = () => {
                                         }
                                     </div>
                                 </div>
-                                <div className="d-flex gap-4 m-3 justify-content-start">
-                                    <div className="customer-company customer-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Id</h6>
-                                            <h4>{customerData.customer_id}</h4>
-                                        </div>
-                                    </div>
-                                    <div className="w-25 customer-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Balance</h6>
-                                            <h4>{customerData.customer_balance}</h4>
-                                        </div>
-                                    </div>
-                                    <div className="w-25 customer-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">GST Number</h6>
-                                            <h4>{customerData.customer_gst}</h4>
-                                        </div>
-                                    </div>
-                                    <div className="w-25 customer-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Is Active</h6>
-                                            {isEditing ? <><Form.Check
+                                <hr ></hr> 
+                                <div class="table-responsive-sm">
+                                <table class="table table-borderless">
+                                 <tbody>
+                                    <tr>
+                                    <td class="fw-bolder pb-0">Id</td>
+                                    <td class="fw-bolder pb-0">Balance</td>
+                                    <td class="fw-bolder pb-0"> GST Number</td>
+                                    <td class="fw-bolder pb-0">Is Active</td>
+                                    </tr>
+                                    <tr>
+                                    <td class="pt-0"> {customerData.customer_id}</td>
+                                    <td class="pt-0">{customerData.customer_balance}</td>
+                                    <td class="pt-0">{customerData.customer_gst}</td>
+                                    <td class="pt-0">
+                                    {isEditing ? <><Form.Check
                                                 type="switch"
                                                 className="customer-value-is-active"
                                                 name="customer_is_active"
@@ -231,32 +225,19 @@ const CustomerDetails = () => {
                                                 value={values.customer_is_active}
                                                 defaultChecked={values.customer_is_active}
                                             /></> :
-                                                <h4>{customerData.customer_is_active ? "Active" : "Disabled"}</h4>}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="d-flex gap-4 justify-content-center m-3">
-                                    <div className="customer-value-address customer-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Adddress</h6>
-                                            {isEditing ? <><Form.Control
-                                                className="border-0 shadow-none customer-value"
-                                                name="customer_address"
-                                                type="text"
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                isInvalid={errors.customer_address && touched.customer_address}
-                                                value={values.customer_address}
-                                            />
-                                                <Form.Control.Feedback type="invalid">
-                                                    {errors.customer_address}
-                                                </Form.Control.Feedback></> : <h4>{customerData.customer_address}</h4>}
-                                        </div>
-                                    </div>
-                                    <div className="customer-basic-meta customer-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Email</h6>
-                                            {isEditing ? <><Form.Control
+                                                <a>{customerData.customer_is_active ? "Active" : "Disabled"}</a>}    
+                                        
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    
+                                    <td class="fw-bolder pb-0 pt-3">Email</td>
+                                    <td class="fw-bolder pb-0 pt-3">Contact Number</td>
+                                    <td class="fw-bolder pb-0 pt-3" colspan="2">Adddress</td>
+                                    </tr>
+                                    <tr>
+                                   
+                                    <td class="py-0">{isEditing ? <><Form.Control
                                                 className="border-0 shadow-none customer-value"
                                                 name="customer_email"
                                                 type="text"
@@ -267,13 +248,10 @@ const CustomerDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.customer_email}
-                                                </Form.Control.Feedback></> : <h4>{customerData.customer_email}</h4>}
-                                        </div>
-                                    </div>
-                                    <div className="customer-basic-meta customer-card-border">
-                                        <div className="p-3">
-                                            <h6 className="fw-normal">Contact Number</h6>
-                                            {isEditing ? <><Form.Control
+                                                </Form.Control.Feedback></> : <a>{customerData.customer_email}</a>}                                    
+                                    </td>
+                                    <td class="py-0">
+                                    {isEditing ? <><Form.Control
                                                 className="border-0 shadow-none customer-value"
                                                 name="customer_contact_number"
                                                 type="number"
@@ -284,10 +262,31 @@ const CustomerDetails = () => {
                                             />
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.customer_contact_number}
-                                                </Form.Control.Feedback></> : <h4>{customerData.customer_contact_number}</h4>}
-                                        </div>
-                                    </div>
+                                                </Form.Control.Feedback></> : <a>{customerData.customer_contact_number}</a>}
+                                    </td>
+                                    <td class="py-0" colspan="2"> {isEditing ? <><Form.Control
+                                                className="border-0 shadow-none customer-value"
+                                                name="customer_address"
+                                                type="text"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                isInvalid={errors.customer_address && touched.customer_address}
+                                                value={values.customer_address}
+                                            />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.customer_address}
+                                                </Form.Control.Feedback></> : <a>{customerData.customer_address}</a>}
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
                                 </div>
+
+
+
+
+
+                              
                             </Form>
                         </>
                     )}
@@ -302,7 +301,7 @@ const CustomerDetails = () => {
             />
         }
         <CustomTable
-            className={"customer-history-table mt-4"}
+            className={"history-table"}
             isLoading={isTableLoading}
             title={"Customer History"}
             headers={customerHistoryHeader}

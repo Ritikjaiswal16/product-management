@@ -1,9 +1,11 @@
 .product-page{
-    width: 100%;
-    justify-content: center;
-    /* height: 100%; */
     height: inherit !important;
 }
+
+.product-table{
+    height: inherit !important;
+}
+
 .delete-button{
     font-weight: 700 !important;
     cursor: pointer !important;
@@ -12,4 +14,3 @@
         text-decoration: underline !important;
     }
 }
-

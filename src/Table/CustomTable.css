@@ -3,9 +3,10 @@
     border-color: #e4d8c5!important;
     border-radius: 20px !important;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    height: inherit !important;
     overflow-y: auto;
+    padding: 1.6%;
 }
+
 th{
     vertical-align: middle;
 }
@@ -40,3 +41,8 @@ th{
     content: none !important;
 }
 
+
+.table-card-name{
+    padding: .5%;
+    margin-bottom: 1.5%;
+}

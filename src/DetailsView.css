@@ -1,0 +1,25 @@
+.top-div{
+    max-height: 89lvh !important;
+    display:flex; 
+    flex-direction: column;
+}
+
+.basic-details{
+    background-color: white; 
+    border-radius: 20px;
+    padding:  2% 1.5% 1% 1.5%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;    
+}
+
+.basic-details-heading{
+    padding: 0.5%;
+}
+
+
+.history-table{
+    height: 100%;
+    width: 100% !important;
+    margin-top: 1% !important; 
+    border-radius: 20px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}

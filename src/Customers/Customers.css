@@ -1,9 +1,18 @@
 .customers-page{
-    width: 100%;
-    justify-content: center;
-    /* height: 100%; */
     height: inherit !important;
 }
-/* .inventory-table{
+
+.customers-table{
+    height: inherit !important;
+}
+
+
+/* .customers-page{
+    width: 100%;
+    justify-content: center;
+    height: 100%; 
+    height: inherit !important;
+}
+.inventory-table{
     max-height: 85vh;
 } */

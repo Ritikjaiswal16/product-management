@@ -73,10 +73,10 @@ const CustomTable = ({
   }
 
   return (
-    <Card className={`table-card p-4 ${className}`}>
+    <Card className={`table-card ${className}`}>
       {isLoading && <SpinnerOverlay />}
 
-      <div className="d-flex p-2 gap-3 justify-content-between align-items-center mb-4">
+      <div className="d-flex gap-3 justify-content-between align-items-center table-card-name">
         <h4 className='mb-0'>{title}</h4>
         { !isError &&
         <div className='d-flex gap-4'>
