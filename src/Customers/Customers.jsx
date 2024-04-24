@@ -32,13 +32,22 @@ const Customers = () => {
         try {
             setIsLoading(true);
             let response;
-            if((ShowAddCustomerModal && Object.keys(ShowAddCustomerModal)?.length) || isUpdatingFor){
-                response = (await axios.put(`http://192.168.1.13:8000/api/customers/${isUpdatingFor || ShowAddCustomerModal.id}`, requestBody, getHeaderOptions(token))).data;
-                setToastInfo({type:"success", message:"Customer updated successfully."});
-            } else{
-                response = (await axios.post('http://192.168.1.13:8000/api/customers', requestBody, getHeaderOptions(token))).data;
-                setToastInfo({type:"success", message:"Customer Added successfully."});
+            // if((ShowAddCustomerModal && Object.keys(ShowAddCustomerModal)?.length) || isUpdatingFor){
+            //     response = (await axios.put(`http://192.168.1.13:8000/api/customers/${isUpdatingFor || ShowAddCustomerModal.id}`, requestBody, getHeaderOptions(token))).data;
+            //     setToastInfo({type:"success", message:"Customer updated successfully."});
+            // } else{
+                for(let i=11;i<80;i++){
+                const req = {
+                    "customer_name": "Ritik"+i,
+                    "customer_address": "Ajandi",
+                    "customer_gst": null,
+                    "customer_email": null,
+                    "customer_contact_number": "90234567"+i
+                }
+                response = (await axios.post('http://192.168.1.13:8000/api/customers', req, getHeaderOptions(token))).data;
             }
+                setToastInfo({type:"success", message:"Customer Added successfully."});
+            // }
             console.log("Response", response);
             setPagination(1);
             setShowAddCustomerModal(null);
