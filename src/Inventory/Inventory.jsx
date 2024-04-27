@@ -25,25 +25,6 @@ const Inventory = () => {
         setPageNumber(number);
     }
 
-    batch_number
-: 
-"QA-019"
-cost_price
-: 
-800
-expiry_date
-: 
-"2026-12-03"
-product
-: 
-"7797ee60-712c-48ea-9df6-18586ea5461a"
-product_name
-: 
-"Taboli"
-stock
-: 
-20
-
     const inventoryHeader = Object.freeze([
         
         {
@@ -67,9 +48,9 @@ stock
             accessorKey: 'stock',
         },
         {
-            name: "Price",
-            accessorKey: 'cost_price'
-        },
+            name: "Net Quantity",
+            accessorKey: "product_net_quantity"
+        }
     ])
 
     const handleSearch = useCallback(debounce((value) => getInventory(1, value)), []);
@@ -133,7 +114,7 @@ stock
     const dropdownOptions = [
         {
             name:"Edit",
-            onClick:(values) => navigate(`/inventory/${values.inventory_id}`)
+            onClick:(values) => navigate(`/inventory/${values.product}`)
         },
         {
             name:"Delete",
@@ -168,8 +149,6 @@ stock
                 headers={inventoryHeader}
                 records={inventoryDetails?.results}
                 totalRecords={inventoryDetails?.count}
-                primaryBtnHeader={"Add Inventory"}
-                primaryBtnHandler={() => setShowAddInventoryModal({})}
                 dropdownOptions={dropdownOptions}
                 pageNumber={pageNumber}
                 setPageNumber={setPagination}

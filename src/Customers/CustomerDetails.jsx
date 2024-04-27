@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SpinnerOverlay from "../Components/SpinnerOverlay";
 import axios from "axios";
 import { getHeaderOptions } from "../Utils/AxiosUtils";
@@ -23,6 +23,7 @@ const CustomerDetails = () => {
     const [isTableLoading, setIsTableLoading] = useState();
     const [isEditing, setIsEditing] = useState(false);
     const [showHistoryModal, setShowHistoryModal] = useState(false);
+    const navigate = useNavigate();
 
     const setPagination = (number = 1) => {
         getCustomerHistory(number);
@@ -172,7 +173,8 @@ const CustomerDetails = () => {
                         <>
                             <Form noValidate onSubmit={handleSubmit}>
                                 <div className="d-flex justify-content-between pb-0 basic-details-heading">
-                                    <Form.Group>
+                                    <Form.Group className="d-flex align-center gap-1">
+                                    <div className="details-back-btn" onClick={() => navigate("/customers")}><box-icon size="md" name='chevron-left'></box-icon></div>
                                         {isEditing ? <><Form.Control
                                             className="border-0 shadow-none customer-value-name"
                                             name="customer_name"
@@ -184,7 +186,8 @@ const CustomerDetails = () => {
                                         />
                                             <Form.Control.Feedback type="invalid">
                                                 {errors.customer_name}
-                                            </Form.Control.Feedback></> : <h4>{customerData.customer_name}</h4>}
+                                            </Form.Control.Feedback></> 
+                                        : <h4 className="pt-1">{customerData.customer_name}</h4>}
 
                                     </Form.Group>
                                     <div className="d-flex gap-4">

@@ -22,6 +22,10 @@
 }
 
 
+.details-back-btn:hover{
+    cursor: pointer !important;
+}
+
 
 
 .set-max-width{

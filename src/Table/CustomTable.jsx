@@ -4,6 +4,20 @@ import { SpinnerOverlay, ZeroState, ErrorState } from '../Components';
 import { STATUS } from '../Utils/Constant';
 import "boxicons";
 import "./CustomTable.css";
+import { Link } from 'react-router-dom';
+
+const generateRowData = (key, record) => {
+  if(key.onClick)
+  {
+    return key.onClick(record);
+  }
+  if(record[key.accessorKey])
+  {
+    return key.link ? <Link href="#" onClick={() => key.link(record)}>{record[key.accessorKey]}</Link> : record[key.accessorKey];
+  }
+
+  return(record[key.accessorKey] === 0 ? 0: "-")
+}
 
 const CustomTable = ({
     className,
@@ -13,8 +27,6 @@ const CustomTable = ({
     totalRecords,
     primaryBtnHeader,
     primaryBtnHandler,
-    handleRecordEdit,
-    handleDeleteRecord,
     pageNumber,
     setPageNumber,
     handleSearch,
@@ -47,7 +59,7 @@ const CustomTable = ({
               <tr className='table-row'>
                 <td>{(pageNumber-1)*25+index + 1}</td>
                 {headers.map((key) => (
-                  <td>{key.onClick ? key.onClick(record) : (record[key.accessorKey] || (record[key.accessorKey] === 0 ? 0: "-"))}</td>
+                  <td>{generateRowData(key, record)}</td>
                 ))
 
                 }

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SpinnerOverlay from "../Components/SpinnerOverlay";
 import axios from "axios";
 import { getHeaderOptions } from "../Utils/AxiosUtils";
@@ -11,6 +11,7 @@ import moment from "moment";
 import './ProductDetails.css';
 import '../DetailsView.css';
 import { Formik } from "formik";
+import "boxicons";
 
 const ProductDetails = () => {
     const { productId } = useParams();
@@ -21,6 +22,7 @@ const ProductDetails = () => {
     const [isLoading, setIsLoading] = useState();
     const [isTableLoading, setIsTableLoading] = useState();
     const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
 
     const setPagination = (number = 1) => {
         getProductHistory(number);
@@ -126,7 +128,7 @@ const ProductDetails = () => {
     const getProductHistory = useCallback(async (pageNumber, searchText) => {
         try {
             setIsTableLoading(true);
-            const response = (await axios.get(`http://192.168.1.13:8000/api/inventory/${productId}`, { params: { page: pageNumber || 1, search: searchText }, ...getHeaderOptions(token) })).data;
+            const response = (await axios.get(`http://192.168.1.13:8000/api/products/logs/${productId}`, { params: { page: pageNumber || 1, search: searchText }, ...getHeaderOptions(token) })).data;
             console.log("Response", response);
             setProductDetail(response);
         } catch (error) {
@@ -165,8 +167,9 @@ const ProductDetails = () => {
                         <>
                             <Form noValidate onSubmit={handleSubmit}>
                                 <div className="d-flex justify-content-between pb-0 basic-details-heading">
-                                    <Form.Group>
-                                        <h4>{productData.product_name}</h4>
+                                    <Form.Group className="d-flex align-center gap-1">
+                                    <div className="details-back-btn" onClick={() => navigate("/products")}><box-icon size="md" name='chevron-left'></box-icon></div>
+                                        <h4 className="pt-1">{productData.product_name}</h4>
                                     </Form.Group>
                                     {isEditing ?
                                         <Button className="product-edit rounded-3" onClick={handleSubmit} disabled={!isValid || !dirty}>Save</Button>

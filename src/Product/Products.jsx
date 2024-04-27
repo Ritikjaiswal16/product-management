@@ -27,11 +27,12 @@ const Products = () => {
 
     const productHeader = Object.freeze([
         {
-            name: "Product Name",
+            name: "Name",
             accessorKey: 'product_name',
+            link: (values) => navigate(`/products/${values.product_id}`)
         },
         {
-            name: "Product Manufacturer",
+            name: "Manufacturer",
             accessorKey: 'product_manufacturer'
         },
         {
@@ -155,7 +156,7 @@ const Products = () => {
                 headers={productHeader}
                 records={productDetails?.results}
                 totalRecords={productDetails?.count}
-                primaryBtnHeader={"Add Product"}
+                primaryBtnHeader={"Add"}
                 primaryBtnHandler={() => setShowAddProductModal({})}
                 dropdownOptions={dropdownOptions}
                 pageNumber={pageNumber}

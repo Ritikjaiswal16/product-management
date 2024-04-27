@@ -9,6 +9,8 @@ import Customers from "../Customers/Customers";
 import ProductDetails from "../Product/ProductDetails";
 import Inventory from "../Inventory/Inventory";
 import CustomerDetails from "../Customers/CustomerDetails";
+import Invoices from "../Invoice/Invoice";
+import AddInvoice from "../Invoice/AddInvoice";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -53,7 +55,11 @@ const Routes = () => {
         },
         {
           path: "/invoices",
-          element: <div>Invoice</div>,
+          element: <Invoices/>,
+        },
+        {
+          path: "/invoices/add",
+          element: <AddInvoice/>,
         },
         {
           path: "/books",

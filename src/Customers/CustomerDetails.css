@@ -15,6 +15,7 @@
 .customer-value{
     /* font-size: 1.25rem !important; */
     /* font-weight: bold !important; */
+    width: 50% !important;
     border-bottom: 1px solid !important;
 }
 .customer-value-name{
@@ -29,7 +30,7 @@
     width: 40% !important;
 } */
 .customer-edit{
-    width: 5rem;
+    width: 5rem !important;
     /* font-size: 18px !important;  */
 }
 

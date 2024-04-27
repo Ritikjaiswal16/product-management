@@ -5,7 +5,6 @@ import { useAuth } from "../Routes/AuthProvider";
 import { getHeaderOptions } from "../Utils/AxiosUtils";
 import Toaster from "../Components/Toaster";
 import { debounce } from "../Utils/utils";
-import { customerHeader } from "../Utils/TableUtils";
 import AddCustomerModal from "./AddCustomerModal";
 import './Customers.css';
 import { useNavigate } from "react-router-dom";
@@ -21,6 +20,45 @@ const Customers = () => {
     const { token } = useAuth();
     const navigate = useNavigate();
 
+    const customerHeader = [
+        {
+            name: "Id",
+            accessorKey: 'customer_id',
+        },
+        {
+            name: "Name",
+            accessorKey: 'customer_name',
+            link: (values) => navigate(`/customers/${values.id}`)
+        },
+        {
+            name: "Address",
+            accessorKey: 'customer_address'
+        },
+        {
+            name: "GST Number",
+            accessorKey: 'customer_gst',
+        },
+        {
+            name: "Email",
+            accessorKey: 'customer_email',
+        },
+        {
+            name: "Contact Number",
+            accessorKey: 'customer_contact_number',
+        },
+        {
+            name: "Balance",
+            accessorKey: 'customer_balance',
+        },
+        {
+            name: "Status",
+            accessorKey: 'customer_is_active',
+            onClick: (record) => {
+                return(record.customer_is_active? "Active" :"Disabled")
+            }
+        }
+    ]
+
     const setPagination = (number = 1) => {
         getCustomers(number);
         setPageNumber(number);
@@ -32,22 +70,8 @@ const Customers = () => {
         try {
             setIsLoading(true);
             let response;
-            // if((ShowAddCustomerModal && Object.keys(ShowAddCustomerModal)?.length) || isUpdatingFor){
-            //     response = (await axios.put(`http://192.168.1.13:8000/api/customers/${isUpdatingFor || ShowAddCustomerModal.id}`, requestBody, getHeaderOptions(token))).data;
-            //     setToastInfo({type:"success", message:"Customer updated successfully."});
-            // } else{
-                for(let i=11;i<80;i++){
-                const req = {
-                    "customer_name": "Ritik"+i,
-                    "customer_address": "Ajandi",
-                    "customer_gst": null,
-                    "customer_email": null,
-                    "customer_contact_number": "90234567"+i
-                }
-                response = (await axios.post('http://192.168.1.13:8000/api/customers', req, getHeaderOptions(token))).data;
-            }
+                response = (await axios.post('http://192.168.1.13:8000/api/customers', requestBody, getHeaderOptions(token))).data;
                 setToastInfo({type:"success", message:"Customer Added successfully."});
-            // }
             console.log("Response", response);
             setPagination(1);
             setShowAddCustomerModal(null);
@@ -114,7 +138,7 @@ const Customers = () => {
                 headers={customerHeader}
                 records={customerDetails?.results}
                 totalRecords={customerDetails?.count}
-                primaryBtnHeader={"Add Customer"}
+                primaryBtnHeader={"Add"}
                 primaryBtnHandler={() => setShowAddCustomerModal({})}
                 pageNumber={pageNumber}
                 setPageNumber={setPagination}
