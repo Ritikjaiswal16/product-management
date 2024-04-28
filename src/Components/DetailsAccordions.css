@@ -1,0 +1,9 @@
+.basic-details-heading-accordion{
+    padding-top: 0.5%;
+}
+.basic-details-accordion{
+    background-color: white; 
+    border-radius: 20px;
+    padding:   1.5%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;    
+}

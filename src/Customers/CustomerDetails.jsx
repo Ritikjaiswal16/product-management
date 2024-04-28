@@ -12,6 +12,7 @@ import './CustomerDetails.css';
 import '../DetailsView.css';
 import { Formik } from "formik";
 import AddCustomerHistoryModal from "./AddCustomerHistoryModal";
+import DetailsAccordions from "../Components/DetailsAccordions"
 
 const CustomerDetails = () => {
     const { customerId } = useParams();
@@ -154,7 +155,7 @@ const CustomerDetails = () => {
     return (<div className="top-div">
         {isLoading && <SpinnerOverlay />}
         {Object.keys(customerData)?.length ? (
-            <div className="basic-details">
+            <div >
                 <Formik
                     initialValues={customerData}
                     validate={validateCustomer}
@@ -172,9 +173,11 @@ const CustomerDetails = () => {
                     }) => (
                         <>
                             <Form noValidate onSubmit={handleSubmit}>
-                                <div className="d-flex justify-content-between pb-0 basic-details-heading">
+                                <DetailsAccordions 
+                                backButton={<div className="details-back-btn" onClick={() => navigate("/customers")}><box-icon size="md" name='chevron-left'></box-icon></div>}
+                                title={
                                     <Form.Group className="d-flex align-center gap-1">
-                                    <div className="details-back-btn" onClick={() => navigate("/customers")}><box-icon size="md" name='chevron-left'></box-icon></div>
+                                    
                                         {isEditing ? <><Form.Control
                                             className="border-0 shadow-none customer-value-name"
                                             name="customer_name"
@@ -189,7 +192,8 @@ const CustomerDetails = () => {
                                             </Form.Control.Feedback></> 
                                         : <h4 className="pt-1">{customerData.customer_name}</h4>}
 
-                                    </Form.Group>
+                                    </Form.Group>}
+                                    rightButton={
                                     <div className="d-flex gap-4">
                                         {isEditing ?
                                             <>
@@ -202,10 +206,11 @@ const CustomerDetails = () => {
                                             <Button className="rounded-3 details-button" onClick={() => {}}>Statement</Button>
                                             </>
                                         }
-                                    </div>
-                                </div>
-                                <hr ></hr> 
+                                    </div>}
+                                body={
+                                    
                                 <div class="table-responsive-sm">
+                                    
                                 <table class="table table-borderless">
                                  <tbody>
                                     <tr>
@@ -284,6 +289,10 @@ const CustomerDetails = () => {
                                 </tbody>
                                 </table>
                                 </div>
+                                }>
+
+                                </DetailsAccordions>
+                         
 
 
 
