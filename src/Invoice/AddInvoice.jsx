@@ -1,19 +1,44 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Card, Form, Modal } from "react-bootstrap";
-import { getHeaderOptions } from "../Utils/AxiosUtils";
+import { apiURL, getHeaderOptions } from "../Utils/AxiosUtils";
 import { useAuth } from "../Routes/AuthProvider";
 import { debounce } from "../Utils/utils";
 import axios from "axios";
 import makeAnimated from "react-select/animated";
 import AsyncSelect from "react-select/async";
 import { AddCustomerForm } from "../Customers/AddCustomerModal";
+import { useNavigate } from "react-router-dom";
 
 const AddInvoice = ({ handleClose }) => {
-  const [customerDetails, setCustomerDetails] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState();
   const [addNewCustomer, setAddNewCustomer] = useState(false);
+  const [transactionType, setTransactionType] = useState("sales");
   const { token } = useAuth();
+  const navigate = useNavigate();
 
-  console.log("customer Details", customerDetails);
+  const handleSave = async (requestBody) => {
+    try {
+      const response = (
+        await axios.post(
+          `${apiURL}/api/customers`,
+          requestBody,
+          getHeaderOptions(token)
+        )
+      ).data;
+      console.log("Response", response);
+      setSelectedCustomer(response);
+      setAddNewCustomer(false);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const handleProceed = () => {
+    handleClose();
+    navigate(
+      `/invoices/${selectedCustomer.id}/new?transactionType=${transactionType}`
+    );
+  };
 
   useEffect(() => {
     getCustomers();
@@ -28,7 +53,7 @@ const AddInvoice = ({ handleClose }) => {
     try {
       // setIsLoading(true);
       const response = (
-        await axios.get("http://192.168.1.13:8000/api/customers", {
+        await axios.get(`${apiURL}/api/customers`, {
           params: { page: 1, search: value },
           ...getHeaderOptions(token),
         })
@@ -62,41 +87,68 @@ const AddInvoice = ({ handleClose }) => {
           }
           getOptionValue={(e) => e.id}
           loadOptions={handleSearch}
-          onChange={(value) => setCustomerDetails(value)}
+          value={selectedCustomer}
+          onChange={(value) => {
+            setAddNewCustomer(false);
+            setSelectedCustomer(value);
+          }}
         />
-        <Button onClick={() => setAddNewCustomer(!addNewCustomer)}>
-          New Customer
+        <Button
+          className="d-flex justify-content-center"
+          onClick={() => setAddNewCustomer(!addNewCustomer)}
+        >
+          <div>New Customer</div>
+          <box-icon
+            type="solid"
+            color="white"
+            name={addNewCustomer ? "chevron-up" : "chevron-down"}
+          ></box-icon>
         </Button>
       </div>
       {addNewCustomer && (
-        <AddCustomerForm
-          showModal={{}}
-          handleClose={() => setAddNewCustomer(false)}
-          handleSave={() => {}}
-        />
+        <Card className="m-2">
+          <AddCustomerForm
+            showModal={{}}
+            handleClose={() => setAddNewCustomer(false)}
+            handleSave={handleSave}
+          />
+        </Card>
       )}
-      <div key={`inline`} className="m-3 ">
-        <Form.Check
-          inline
-          label="Purchase"
-          name="group1"
-          type="radio"
-          id={`inline-1`}
-        />
+      <div key={`inline`} className="m-3">
         <Form.Check
           inline
           label="Sale"
-          name="group1"
+          name="transaction_type"
           type="radio"
-          id={`inline-2`}
+          defaultChecked
+          onChange={(value) => setTransactionType("sales")}
         />
         <Form.Check
           inline
-          name="group1"
+          label="Purchase"
+          name="transaction_type"
+          type="radio"
+          onChange={(value) => setTransactionType("purchase")}
+        />
+        <Form.Check
+          inline
+          name="transaction_type"
           label="Sales Returned"
           type="radio"
-          id={`inline-3`}
+          onChange={(value) => setTransactionType("sales returned")}
         />
+      </div>
+      <div className="d-flex justify-content-end gap-4 m-4">
+        <Button variant="secondary" onClick={handleClose}>
+          Cancel Invoice
+        </Button>
+        <Button
+          onClick={handleProceed}
+          type="submit"
+          disabled={!transactionType || !selectedCustomer}
+        >
+          Proceed
+        </Button>
       </div>
     </Modal>
   );

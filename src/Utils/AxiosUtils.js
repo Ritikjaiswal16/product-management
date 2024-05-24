@@ -6,3 +6,5 @@ export const getHeaderOptions = (token) => ({
           "Authorization": "Bearer "+token,
         }
     })
+
+export const apiURL="http://192.168.128.185:8000";

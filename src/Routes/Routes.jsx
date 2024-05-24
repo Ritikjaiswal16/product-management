@@ -10,7 +10,7 @@ import ProductDetails from "../Product/ProductDetails";
 import Inventory from "../Inventory/Inventory";
 import CustomerDetails from "../Customers/CustomerDetails";
 import Invoices from "../Invoice/Invoice";
-import AddInvoice from "../Invoice/AddInvoice";
+import CreateInvoice from "../Invoice/CreateInvoice";
 
 const Routes = () => {
   const { token } = useAuth();
@@ -35,31 +35,31 @@ const Routes = () => {
   const routesForAuthenticatedOnly = [
     {
       path: "/",
-      element: <ProtectedRoute/>, // Wrap the component in ProtectedRoute
+      element: <ProtectedRoute />, // Wrap the component in ProtectedRoute
       children: [
         {
           path: "/products/:productId",
-          element: <ProductDetails/>,
+          element: <ProductDetails />,
         },
         {
           path: "/products",
-          element: <Products/>,
+          element: <Products />,
         },
         {
           path: "/customers/:customerId",
-          element: <CustomerDetails/>,
+          element: <CustomerDetails />,
         },
         {
           path: "/inventory",
-          element: <Inventory/>,
+          element: <Inventory />,
         },
         {
           path: "/invoices",
-          element: <Invoices/>,
+          element: <Invoices />,
         },
         {
-          path: "/invoices/add",
-          element: <AddInvoice/>,
+          path: "/invoices/:customerId/new",
+          element: <CreateInvoice />,
         },
         {
           path: "/books",
@@ -67,7 +67,7 @@ const Routes = () => {
         },
         {
           path: "/customers",
-          element: <Customers/>,
+          element: <Customers />,
         },
         {
           path: "/profile",
@@ -79,7 +79,7 @@ const Routes = () => {
         },
         {
           path: "/",
-          element: <Dashboard/>,
+          element: <Dashboard />,
         },
       ],
     },
@@ -89,8 +89,8 @@ const Routes = () => {
   const routesForNotAuthenticatedOnly = [
     {
       path: "/",
-      element: <LoginPage/>,
-    }
+      element: <LoginPage />,
+    },
   ];
 
   // Combine and conditionally include routes based on authentication status
