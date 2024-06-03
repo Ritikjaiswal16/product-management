@@ -18,6 +18,7 @@ const AddProductModal = ({ showModal, setShowModal, handleSave }) => {
 };
 
 export const AddProductForm = ({ showModal, handleClose, handleSave }) => {
+  console.log("cscjafawfwa", 1233333333333);
   const validateProduct = (values) => {
     let errors = {};
     if (!values.product_name) {
@@ -74,7 +75,13 @@ export const AddProductForm = ({ showModal, handleClose, handleSave }) => {
         dirty,
       }) => (
         <>
-          <Form noValidate onSubmit={handleSubmit}>
+          <Form
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <Modal.Body>
               <Form.Group>
                 <FloatingLabel label="Product Name" className="mb-3">

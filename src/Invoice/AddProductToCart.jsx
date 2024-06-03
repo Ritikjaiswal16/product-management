@@ -107,7 +107,13 @@ const AddProductToCart = ({ handleClose }) => {
           dirty,
         }) => (
           <>
-            <Form noValidate onSubmit={handleSubmit}>
+            <Form
+              noValidate
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+            >
               <div className="d-flex gap-4 m-4">
                 <h4 className="W-50">Customer</h4>
                 <AsyncSelect
