@@ -19,7 +19,7 @@ const SignUpForm = () => {
       formData.append("contact_number", values.contactNumber);
       formData.append("email", values.email);
       formData.append("password", values.password);
-      formData.append("signature_image", values.signature);
+      formData.append("bank_details", values.bank_details);
       const options = {
         headers: {
           "Content-Type": "multipart/form-data;",
@@ -28,7 +28,7 @@ const SignUpForm = () => {
         },
       };
       const response = (
-        await axios.post(`${apiURL}/api/account/register`, formData, options)
+        await axios.post(`${apiURL}/accounts`, formData, options)
       ).data;
       console.log("Account created successfully: ", formData);
       setToken(response.token.access);
@@ -38,7 +38,7 @@ const SignUpForm = () => {
     }
   };
   return (
-    <Card className="p-4 w-75 me-auto ms-auto mt-4">
+    <Card className="p-4 w-75 me-auto ms-auto mt-5 glass-card">
       <Card.Body>
         <Card.Title className="mb-4">Hey there! Welcome</Card.Title>
         <Formik
@@ -48,7 +48,7 @@ const SignUpForm = () => {
             gstNumber: "",
             address: "",
             contactNumber: "",
-            signature: "",
+            bank_details: "",
             password: "",
             confirmPassword: "",
           }}
@@ -58,7 +58,7 @@ const SignUpForm = () => {
             gstNumber,
             address,
             contactNumber,
-            signature,
+            bank_details,
             password,
             confirmPassword,
           }) => {
@@ -85,13 +85,15 @@ const SignUpForm = () => {
             ) {
               errors.contactNumber = "Invalid contact number";
             }
-            if (!signature) {
-              errors.signature = "Required";
+            if (!bank_details) {
+              errors.bank_details = "Required";
             }
             if (!password?.trim()) {
               errors.password = "Required";
             } else if (
-              !/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!#$%&?"]).{8,}$/.test(password)
+              !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,}$/.test(
+                password
+              )
             ) {
               errors.password =
                 'Password should be of minimum length 8 and contain at least two alphabets (lower and upper case) and two symbols(!#$%&?"). Should not contain space';
@@ -119,7 +121,6 @@ const SignUpForm = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            setFieldValue,
             isValid,
             dirty,
           }) => (
@@ -135,7 +136,7 @@ const SignUpForm = () => {
                     name="name"
                     value={values.name}
                     type="text"
-                    placeholder="John Agro"
+                    placeholder="Patel Agro"
                     autoFocus
                     isInvalid={errors.name && touched.name}
                   />
@@ -228,21 +229,19 @@ const SignUpForm = () => {
 
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm="2">
-                  Signature
+                  Bank Details
                 </Form.Label>
                 <Col sm="10">
                   <Form.Control
-                    onChange={(event) => {
-                      setFieldValue("signature", event.target.files[0]);
-                    }}
+                    onChange={handleChange}
                     onBlur={handleBlur}
-                    name="signature"
-                    type="file"
-                    accept="image/jpeg,image/png,image/gif"
-                    isInvalid={errors.signature && touched.signature}
+                    name="bank_details"
+                    rows={3}
+                    as="textarea"
+                    isInvalid={errors.bank_details && touched.bank_details}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.signature}
+                    {errors.bank_details}
                   </Form.Control.Feedback>
                 </Col>
               </Form.Group>

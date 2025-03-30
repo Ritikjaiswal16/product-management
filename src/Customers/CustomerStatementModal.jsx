@@ -2,15 +2,7 @@ import { Formik } from "formik";
 import React from "react";
 import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 
-const AddCustomerHistoryModal = ({ setShowModal, handleSave }) => {
-  const validateProduct = (values) => {
-    let errors = {};
-    if (!values.amount || values.amount <= 0) {
-      errors.amount = "Amount should be a positive number";
-    }
-    return errors;
-  };
-
+const CustomerStatementModal = ({ setShowModal, handleSave }) => {
   return (
     <Modal show onHide={() => setShowModal(null)} size="lg">
       <Modal.Header closeButton>
@@ -121,4 +113,4 @@ const AddCustomerHistoryModal = ({ setShowModal, handleSave }) => {
   );
 };
 
-export default AddCustomerHistoryModal;
+export default CustomerStatementModal;

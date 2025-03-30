@@ -28,7 +28,8 @@ const Invoices = () => {
   const invoiceHeader = Object.freeze([
     {
       name: "Number",
-      accessorKey: "invoice_number",
+      accessorKey: "number",
+      link: (values) => navigate(`/invoices/${values.id}`),
     },
     {
       name: "Customer Name",
@@ -36,7 +37,7 @@ const Invoices = () => {
     },
     {
       name: "Customer Id",
-      accessorKey: "customer_id",
+      accessorKey: "customer_registration_id",
     },
     {
       name: "Date",
@@ -48,7 +49,7 @@ const Invoices = () => {
     },
     {
       name: "Type",
-      accessorKey: "invoice_type",
+      accessorKey: "type",
     },
     {
       name: "Amount",
@@ -60,7 +61,7 @@ const Invoices = () => {
     try {
       setIsLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/invoice`, {
+        await axios.get(`${apiURL}/invoices`, {
           params: { page: pageNumber || 1, search: searchText },
           ...getHeaderOptions(token),
         })
@@ -120,7 +121,7 @@ const Invoices = () => {
         primaryBtnHandler={() => setShowAddInvoiceModal(true)}
         pageNumber={pageNumber}
         setPageNumber={setPagination}
-        handleSearch={() => {}}
+        handleSearch={() => { }}
         dropdownOptions={dropdownOptions}
       />
     </div>

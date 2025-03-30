@@ -34,22 +34,22 @@ const CustomerDetails = () => {
   const validateCustomer = (values) => {
     console.log(values);
     let errors = {};
-    if (!values.customer_name) {
-      errors.customer_name = "Please provide customer name";
+    if (!values.name) {
+      errors.name = "Please provide customer name";
     }
-    if (!values.customer_address) {
-      errors.customer_address = "Please provide address of the customer";
+    if (!values.address) {
+      errors.address = "Please provide address of the customer";
     }
-    if (!values.customer_contact_number) {
-      errors.customer_contact_number = "Please provide contact number";
-    } else if (!/[0-9]{10}/.test(values.customer_contact_number)) {
-      errors.customer_contact_number = "Please provide valid contact number";
+    if (!values.contact_number) {
+      errors.contact_number = "Please provide contact number";
+    } else if (!/[0-9]{10}/.test(values.contact_number)) {
+      errors.contact_number = "Please provide valid contact number";
     }
     if (
-      values.customer_email &&
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.customer_email)
+      values.email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
     ) {
-      errors.customer_email = "Please provide valid email address";
+      errors.email = "Please provide valid email address";
     }
     return errors;
   };
@@ -59,7 +59,7 @@ const CustomerDetails = () => {
       setIsLoading(true);
       const response = (
         await axios.get(
-          `${apiURL}/api/customers/${customerId}`,
+          `${apiURL}/customers/${customerId}`,
           getHeaderOptions(token)
         )
       ).data;
@@ -73,33 +73,55 @@ const CustomerDetails = () => {
 
   const customerHistoryHeader = Object.freeze([
     {
-      name: "Date",
-      accessorKey: "date",
+      name: "Receipt No",
+      accessorKey: "receipt_number",
+    },
+    {
+      name: "Transaction Date",
+      accessorKey: "created_at",
       onClick: (value) => {
-        let testDateUtc = moment.utc(value.date).local();
+        let testDateUtc = moment.utc(value.created_at).local();
         return testDateUtc.format("DD/MM/YYYY, hh:mm A");
       },
     },
     {
-      name: "Payment Type",
-      accessorKey: "payment_type",
+      name: "Invoice Date",
+      accessorKey: "invoice_date",
+      onClick: (value) => {
+        if (value.invoice_date) {
+          let testDateUtc = moment.utc(value.invoice_date).local();
+          return testDateUtc.format("DD/MM/YYYY");
+        }
+        return "-"
+
+      },
+    },
+    {
+      name: "Payment Mode",
+      accessorKey: "payment_mode",
     },
     {
       name: "Description",
       accessorKey: "description",
     },
     {
-      name: "Change Type",
-      accessorKey: "get_change_type_display",
-    },
-    {
-      name: "Amount Type",
-      accessorKey: "get_amount_type_display",
+      name: "Transaction Type",
+      accessorKey: "transaction_type",
     },
     {
       name: "Amount",
       accessorKey: "amount",
+      onClick: (value) => {
+        if (value.transaction == "Credit")
+          return (<span style={{ color: "green" }}>+ {value.amount} Cr</span>)
+        else
+          return (<span style={{ color: "red" }}>- &nbsp;{value.amount} Dr</span>)
+      },
     },
+    {
+      name: "Outstanding",
+      accessorKey: "balance",
+    }
   ]);
 
   const handleSave = async (requestBody) => {
@@ -108,7 +130,7 @@ const CustomerDetails = () => {
       console.log("requestBody", requestBody);
       const response = (
         await axios.put(
-          `${apiURL}/api/customers/${requestBody.id}`,
+          `${apiURL}/customers/${requestBody.id}`,
           requestBody,
           getHeaderOptions(token)
         )
@@ -135,7 +157,7 @@ const CustomerDetails = () => {
       }
       const response = (
         await axios.post(
-          `${apiURL}/api/booklog/${customerData.id}`,
+          `${apiURL}/booklogs/customer/${customerData.id}`,
           body,
           getHeaderOptions(token)
         )
@@ -156,7 +178,7 @@ const CustomerDetails = () => {
     try {
       setIsTableLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/booklog/${customerId}`, {
+        await axios.get(`${apiURL}/booklogs/customer/${customerId}`, {
           params: { page: pageNumber || 1, search: searchText },
           ...getHeaderOptions(token),
         })
@@ -217,21 +239,21 @@ const CustomerDetails = () => {
                           <>
                             <Form.Control
                               className="border-0 shadow-none customer-value-name"
-                              name="customer_name"
+                              name="name"
                               type="text"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               isInvalid={
-                                errors.customer_name && touched.customer_name
+                                errors.name && touched.name
                               }
-                              value={values.customer_name}
+                              value={values.name}
                             />
                             <Form.Control.Feedback type="invalid">
-                              {errors.customer_name}
+                              {errors.name}
                             </Form.Control.Feedback>
                           </>
                         ) : (
-                          <h4 className="pt-1">{customerData.customer_name}</h4>
+                          <h4 className="pt-1">{customerData.name}</h4>
                         )}
                       </Form.Group>
                     }
@@ -264,7 +286,7 @@ const CustomerDetails = () => {
                             </Button>
                             <Button
                               className="rounded-3 details-button"
-                              onClick={() => {}}
+                              onClick={() => { }}
                             >
                               Statement
                             </Button>
@@ -283,27 +305,27 @@ const CustomerDetails = () => {
                               <td class="fw-bolder pb-0">Is Active</td>
                             </tr>
                             <tr>
-                              <td class="pt-0"> {customerData.customer_id}</td>
+                              <td class="pt-0"> {customerData.registration_id}</td>
                               <td class="pt-0">
-                                {customerData.customer_balance}
+                                {customerData.balance}
                               </td>
-                              <td class="pt-0">{customerData.customer_gst}</td>
+                              <td class="pt-0">{customerData.gst}</td>
                               <td class="pt-0">
                                 {isEditing ? (
                                   <>
                                     <Form.Check
                                       type="switch"
                                       className="customer-value-is-active"
-                                      name="customer_is_active"
+                                      name="is_active"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
-                                      value={values.customer_is_active}
-                                      defaultChecked={values.customer_is_active}
+                                      value={values.is_active}
+                                      defaultChecked={values.is_active}
                                     />
                                   </>
                                 ) : (
                                   <a>
-                                    {customerData.customer_is_active
+                                    {customerData.is_active
                                       ? "Active"
                                       : "Disabled"}
                                   </a>
@@ -325,22 +347,22 @@ const CustomerDetails = () => {
                                   <>
                                     <Form.Control
                                       className="border-0 shadow-none customer-value"
-                                      name="customer_email"
+                                      name="email"
                                       type="text"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       isInvalid={
-                                        errors.customer_email &&
-                                        touched.customer_email
+                                        errors.email &&
+                                        touched.email
                                       }
-                                      value={values.customer_email}
+                                      value={values.email}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {errors.customer_email}
+                                      {errors.email}
                                     </Form.Control.Feedback>
                                   </>
                                 ) : (
-                                  <a>{customerData.customer_email}</a>
+                                  <a>{customerData.email}</a>
                                 )}
                               </td>
                               <td class="py-0">
@@ -348,22 +370,22 @@ const CustomerDetails = () => {
                                   <>
                                     <Form.Control
                                       className="border-0 shadow-none customer-value"
-                                      name="customer_contact_number"
+                                      name="contact_number"
                                       type="number"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       isInvalid={
-                                        errors.customer_contact_number &&
-                                        touched.customer_contact_number
+                                        errors.contact_number &&
+                                        touched.contact_number
                                       }
-                                      value={values.customer_contact_number}
+                                      value={values.contact_number}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {errors.customer_contact_number}
+                                      {errors.contact_number}
                                     </Form.Control.Feedback>
                                   </>
                                 ) : (
-                                  <a>{customerData.customer_contact_number}</a>
+                                  <a>{customerData.contact_number}</a>
                                 )}
                               </td>
                               <td class="py-0" colspan="2">
@@ -372,22 +394,22 @@ const CustomerDetails = () => {
                                   <>
                                     <Form.Control
                                       className="border-0 shadow-none customer-value"
-                                      name="customer_address"
+                                      name="address"
                                       type="text"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       isInvalid={
-                                        errors.customer_address &&
-                                        touched.customer_address
+                                        errors.address &&
+                                        touched.address
                                       }
-                                      value={values.customer_address}
+                                      value={values.address}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {errors.customer_address}
+                                      {errors.address}
                                     </Form.Control.Feedback>
                                   </>
                                 ) : (
-                                  <a>{customerData.customer_address}</a>
+                                  <a>{customerData.address}</a>
                                 )}
                               </td>
                             </tr>

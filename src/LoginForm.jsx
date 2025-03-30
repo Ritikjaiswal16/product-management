@@ -24,7 +24,7 @@ const LoginForm = () => {
         // withCredentials: true
       };
       const response = (
-        await axios.post(`${apiURL}/api/account/login`, requestBody, options)
+        await axios.post(`${apiURL}/accounts/login`, requestBody, options)
       ).data;
       console.log("Response", response);
       console.log("Login Successful with credentials: ", requestBody);
@@ -35,7 +35,7 @@ const LoginForm = () => {
     }
   };
   return (
-    <Card className="p-4 w-50 me-auto ms-auto mt-4">
+    <Card className="p-4 w-50 me-auto ms-auto mt-5 glass-card">
       <Card.Body>
         <Card.Title className="mb-4">Good to see you back!</Card.Title>
         <Form onSubmit={handleLogin}>

@@ -1,10 +1,12 @@
 .table-card{
     position: relative;
-    border-color: #e4d8c5!important;
     border-radius: 20px !important;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     overflow-y: auto;
-    padding: 1.6%;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
 }
 
 th{
@@ -45,4 +47,7 @@ th{
 .table-card-name{
     padding: .5%;
     margin-bottom: 1.5%;
+}
+.table-responsive {
+    height: inherit;
 }

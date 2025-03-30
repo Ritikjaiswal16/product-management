@@ -23,38 +23,38 @@ const Customers = () => {
   const customerHeader = [
     {
       name: "Id",
-      accessorKey: "customer_id",
+      accessorKey: "registration_id",
     },
     {
       name: "Name",
-      accessorKey: "customer_name",
+      accessorKey: "name",
       link: (values) => navigate(`/customers/${values.id}`),
     },
     {
       name: "Address",
-      accessorKey: "customer_address",
+      accessorKey: "address",
     },
     {
       name: "GST Number",
-      accessorKey: "customer_gst",
+      accessorKey: "gst",
     },
     {
       name: "Email",
-      accessorKey: "customer_email",
+      accessorKey: "email",
     },
     {
       name: "Contact Number",
-      accessorKey: "customer_contact_number",
+      accessorKey: "contact_number",
     },
     {
       name: "Balance",
-      accessorKey: "customer_balance",
+      accessorKey: "balance",
     },
     {
       name: "Status",
-      accessorKey: "customer_is_active",
+      accessorKey: "is_active",
       onClick: (record) => {
-        return record.customer_is_active ? "Active" : "Disabled";
+        return record.is_active ? "Active" : "Disabled";
       },
     },
   ];
@@ -75,7 +75,7 @@ const Customers = () => {
       let response;
       response = (
         await axios.post(
-          `${apiURL}/api/customers`,
+          `${apiURL}/customers`,
           requestBody,
           getHeaderOptions(token)
         )
@@ -95,11 +95,12 @@ const Customers = () => {
     }
   };
 
+
   const getCustomers = useCallback(async (pageNumber, searchText) => {
     try {
       setIsLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/customers`, {
+        await axios.get(`${apiURL}/customers`, {
           params: { page: pageNumber || 1, search: searchText },
           ...getHeaderOptions(token),
         })
@@ -128,8 +129,8 @@ const Customers = () => {
       onClick: (values) => {
         const requestBody = {
           ...values,
-          // customer_contact_number: "912921546",
-          customer_is_active: !values.customer_is_active,
+          // contact_number: "912921546",
+          is_active: !values.is_active,
         };
         handleSave(requestBody, values.id);
       },

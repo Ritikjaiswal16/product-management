@@ -4,4 +4,57 @@
 
 .invoice-table{
     height: inherit !important;
+    overflow: hidden;
 }
+.invoice-title{
+    position: absolute;
+}
+
+.invoice-footer{
+    position: absolute;
+    right: 10px;
+    margin-top: 1%;
+}
+
+.invoice-footer span{
+    width: 120px;
+}
+
+.invoice-footer input {
+    width: 100px !important;
+}
+
+.invoice-main{
+    background-color: white !important;
+    height: inherit !important;
+    position: relative;
+    border-radius: 20px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    overflow-y: auto;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.invoice-item button:hover{
+    color: #c20000 !important;
+}
+
+.invoice-item button{
+    background: none !important;
+    color: dimgray;
+    border: none !important;
+}
+
+.invoice-details{
+    background-color: white !important;
+    height: inherit !important;
+    position: relative;
+    border-radius: 20px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    overflow-y: auto;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+}
+  

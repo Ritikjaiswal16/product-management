@@ -27,11 +27,19 @@ const Inventory = () => {
 
   const inventoryHeader = Object.freeze([
     {
-      name: "Product Name",
+      name: "Name",
       accessorKey: "product_name",
+      link: (values) => navigate(`/inventory/${values.id}`),
     },
     {
-      name: "Product Manufacturer",
+      name: "Net Quantity",
+      accessorKey: "product_net_quantity",
+      onClick: (value) => {
+        return value.product_net_quantity + " " + value.product_measure_unit;
+      },
+    },
+    {
+      name: "Manufacturer",
       accessorKey: "product_manufacturer",
     },
     {
@@ -43,13 +51,10 @@ const Inventory = () => {
       accessorKey: "expiry_date",
     },
     {
-      name: "Stock",
-      accessorKey: "stock",
+      name: "Quantity",
+      accessorKey: "quantity",
     },
-    {
-      name: "Net Quantity",
-      accessorKey: "product_net_quantity",
-    },
+    
   ]);
 
   const handleSearch = useCallback(
@@ -65,7 +70,7 @@ const Inventory = () => {
       if (Object.keys(showAddInventoryModal).length) {
         response = (
           await axios.put(
-            `${apiURL}/api/inventory/${showAddInventoryModal.inventory_id}`,
+            `${apiURL}/inventory/${showAddInventoryModal.inventory_id}`,
             requestBody,
             getHeaderOptions(token)
           )
@@ -77,7 +82,7 @@ const Inventory = () => {
       } else {
         response = (
           await axios.post(
-            `${apiURL}/api/inventory`,
+            `${apiURL}/inventory`,
             requestBody,
             getHeaderOptions(token)
           )
@@ -102,7 +107,7 @@ const Inventory = () => {
     try {
       setIsLoading(true);
       await axios.delete(
-        `${apiURL}/api/inventory/${inventoryId}`,
+        `${apiURL}/inventory/${inventoryId}`,
         getHeaderOptions(token)
       );
       setPagination(1);
@@ -123,7 +128,7 @@ const Inventory = () => {
     try {
       setIsLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/inventory`, {
+        await axios.get(`${apiURL}/inventory`, {
           params: { page: pageNumber || 1, search: searchText },
           ...getHeaderOptions(token),
         })

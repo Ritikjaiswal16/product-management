@@ -28,35 +28,35 @@ const Products = () => {
   const productHeader = Object.freeze([
     {
       name: "Name",
-      accessorKey: "product_name",
-      link: (values) => navigate(`/products/${values.product_id}`),
-    },
-    {
-      name: "Manufacturer",
-      accessorKey: "product_manufacturer",
+      accessorKey: "name",
+      link: (values) => navigate(`/products/${values.id}`),
     },
     {
       name: "Net Quantity",
-      accessorKey: "product_net_quantity",
+      accessorKey: "net_quantity",
       onClick: (value) => {
-        return value.product_net_quantity + " " + value.product_measure_unit;
+        return value.net_quantity + " " + value.measure_unit;
       },
     },
     {
+      name: "Manufacturer",
+      accessorKey: "manufacturer",
+    },
+    {
       name: "Selling Price",
-      accessorKey: "product_sp_gst",
+      accessorKey: "sp_gst",
     },
     {
       name: "Credit Price",
-      accessorKey: "product_sp_credit",
+      accessorKey: "sp_credit",
     },
     {
       name: "GST %",
-      accessorKey: "product_gst_percentage",
+      accessorKey: "gst_percentage",
     },
     {
       name: "Total Quantity",
-      accessorKey: "product_total_count",
+      accessorKey: "total_count",
     },
   ]);
 
@@ -73,7 +73,7 @@ const Products = () => {
       if (Object.keys(showAddProductModal).length) {
         response = (
           await axios.put(
-            `${apiURL}/api/products/${showAddProductModal.product_id}`,
+            `${apiURL}/products/${showAddProductModal.id}`,
             requestBody,
             getHeaderOptions(token)
           )
@@ -85,7 +85,7 @@ const Products = () => {
       } else {
         response = (
           await axios.post(
-            `${apiURL}/api/products`,
+            `${apiURL}/products`,
             requestBody,
             getHeaderOptions(token)
           )
@@ -110,7 +110,7 @@ const Products = () => {
     try {
       setIsLoading(true);
       await axios.delete(
-        `${apiURL}/api/products/${productId}`,
+        `${apiURL}/products/${productId}`,
         getHeaderOptions(token)
       );
       setPagination(1);
@@ -125,13 +125,13 @@ const Products = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   const getProducts = useCallback(async (pageNumber, searchText) => {
     try {
       setIsLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/products`, {
+        await axios.get(`${apiURL}/products`, {
           params: { page: pageNumber || 1, search: searchText },
           ...getHeaderOptions(token),
         })
@@ -153,7 +153,7 @@ const Products = () => {
   const dropdownOptions = [
     {
       name: "View",
-      onClick: (values) => navigate(`/products/${values.product_id}`),
+      onClick: (values) => navigate(`/products/${values.id}`),
     },
     {
       name: "Delete",
@@ -180,12 +180,12 @@ const Products = () => {
       )}
       {showDeleteModal && (
         <DeleteModal
-          title={`Delete "${showDeleteModal.product_name}" ?`}
+          title={`Delete "${showDeleteModal.name}" ?`}
           message={
             "Are you sure want to delete product?\n Product will be deleted permanently."
           }
           handleCancel={() => setShowDeleteModal(null)}
-          handleDelete={() => handleDeleteProduct(showDeleteModal.product_id)}
+          handleDelete={() => handleDeleteProduct(showDeleteModal.id)}
         />
       )}
       <CustomTable

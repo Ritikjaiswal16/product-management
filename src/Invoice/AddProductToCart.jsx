@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { apiURL, getHeaderOptions } from "../Utils/AxiosUtils";
 import { useAuth } from "../Routes/AuthProvider";
@@ -6,35 +6,57 @@ import { debounce } from "../Utils/utils";
 import axios from "axios";
 import makeAnimated from "react-select/animated";
 import AsyncSelect from "react-select/async";
-import { AddCustomerForm } from "../Customers/AddCustomerModal";
-import { useNavigate } from "react-router-dom";
-import { AddProductForm } from "../Product/AddProductModal";
-import { Formik } from "formik";
+import { Field, Formik } from "formik";
+import InlineCartData from "./InlineCartData";
+
+const ProductQuantityForm = ({
+  productInventory,
+  values,
+  setFieldValue,
+  handleBlur,
+}) => {
+  console.log("Vaues", values);
+  return (
+    <>
+      {productInventory.map((p) => (
+        <Card className="h-25 rounded-pill m-2">
+          <Card.Body className="d-flex justify-content-around align-items-center">
+            {p.batch_number}
+            <div class="vr" />
+            {p.expiry_date}
+            <div class="vr" />
+            <Field
+              component={InlineCartData}
+              data={p}
+              name={p.batch_number + "-quantity"}
+              value={values[p.batch_number + "-quantity"]}
+              onChange={(b) => setFieldValue(p.batch_number + "-quantity", b)}
+              onBlur={handleBlur}
+            />
+            <div class="vr" />
+            <Field
+              name={p.batch_number + "-price"}
+              type="number"
+              onChange={(b) =>
+                setFieldValue(p.batch_number + "-price", b.target.value)
+              }
+              value={values[p.batch_number + "-price"]}
+              min={0}
+              handleBlur={handleBlur}
+              placeholder={p.price}
+            />
+          </Card.Body>
+        </Card>
+      ))}
+    </>
+  );
+};
 
 const AddProductToCart = ({ handleClose }) => {
-  const [addNewProduct, setAddNewProduct] = useState(false);
+  const [productInventory, setProductInventory] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [transactionType, setTransactionType] = useState("sales");
   const { token } = useAuth();
-
-  const validateProduct = (values) => {
-    let errors = {};
-    if (!values.product) {
-      errors.product = "Please select any product";
-    }
-    if (!values.batch_number) {
-      errors.batch_number = "Batch number is required";
-    }
-    if (!values.expiry_date) {
-      errors.expiry_date = "Please enter valid date";
-    }
-    if (!values.cost_price) {
-      errors.cost_price = "Cost price should be greater than zero";
-    }
-    if (!values.stock) {
-      errors.product_hsn = "Please enter valid stock value";
-    }
-    return errors;
-  };
 
   const handleSave = async (requestBody, setFieldValue) => {
     try {
@@ -42,13 +64,12 @@ const AddProductToCart = ({ handleClose }) => {
       console.log("requestBody", requestBody);
       const response = (
         await axios.post(
-          `${apiURL}/api/products`,
+          `${apiURL}/products`,
           requestBody,
           getHeaderOptions(token)
         )
       ).data;
       setFieldValue("product", response);
-      setAddNewProduct(false);
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -74,7 +95,7 @@ const AddProductToCart = ({ handleClose }) => {
     try {
       // setIsLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/products`, {
+        await axios.get(`${apiURL}/products`, {
           params: { page: 1, search: value },
           ...getHeaderOptions(token),
         })
@@ -85,15 +106,58 @@ const AddProductToCart = ({ handleClose }) => {
       console.log("error", error);
     }
   };
+
+  const handleGetProductInventory = async (productId) => {
+    try {
+      // setIsLoading(true);
+      const response = (
+        await axios.get(`${apiURL}/inventory/product/${productId}`, {
+          ...getHeaderOptions(token),
+        })
+      ).data;
+      console.log("Product to cart", response);
+      setProductInventory(response);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const productToCartHeader = Object.freeze([
+    {
+      name: "Name+net quantity+measure unit",
+      batch_number: "Batch Number",
+      expiry_date: "Expiry Date",
+      quantity: "Quantity",
+      price: "Price",
+      Amount: "price*quantity",
+    },
+  ]);
+  const createInitialValues = useMemo(() => {
+    let initialValues = {};
+    productInventory?.forEach((element) => {
+      initialValues[element.batch_number + "-quantity"] = 0;
+      initialValues[element.batch_number + "-price"] = element.price;
+      initialValues[element.batch_number + "-expiry"] = element.expiry_date;
+    });
+    console.log("InitialValues", initialValues);
+    return initialValues;
+  }, [productInventory]);
+
+  const handleAddToCart = (formValues) => {
+    const commonObject = {};
+    //productInventory.
+  };
+
   return (
     <Modal show={true} className="w-100 h-100" onHide={handleClose} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Select product and quantity</Modal.Title>
       </Modal.Header>
       <Formik
-        initialValues={{}}
-        validate={validateProduct}
-        onSubmit={handleProceed}
+        initialValues={createInitialValues}
+        enableReinitialize={true}
+        validate={() => {}}
+        onSubmit={(e) => handleAddToCart(e)}
       >
         {({
           values,
@@ -115,7 +179,7 @@ const AddProductToCart = ({ handleClose }) => {
               }}
             >
               <div className="d-flex gap-4 m-4">
-                <h4 className="W-50">Customer</h4>
+                <h4 className="W-50">Product</h4>
                 <AsyncSelect
                   name="product"
                   className="w-75"
@@ -123,130 +187,42 @@ const AddProductToCart = ({ handleClose }) => {
                   placeholder="Choose product"
                   components={makeAnimated()}
                   getOptionLabel={(e) =>
-                    e.product_name +
+                    e.name +
                     " | " +
-                    e.product_manufacturer +
+                    e.manufacturer +
                     " | " +
-                    e.product_net_quantity +
-                    e.product_measure_unit +
+                    e.net_quantity +
+                    e.measure_unit +
                     " | " +
                     "Rs. " +
-                    e.product_sp_gst +
+                    e.sp_gst +
                     " | " +
-                    e.product_total_count
+                    e.total_count
                   }
                   getOptionValue={(e) => e.id}
                   loadOptions={handleSearch}
                   value={values.product}
                   onChange={(value) => {
-                    setAddNewProduct(false);
                     setFieldValue("product", value);
+                    handleGetProductInventory(value.id);
                   }}
-                  onBlur={handleBlur}
+                  autoFocus
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors.product}
-                </Form.Control.Feedback>
-                <Button
-                  className="d-flex justify-content-center"
-                  onClick={() => setAddNewProduct(!addNewProduct)}
-                >
-                  <div>New Product</div>
-                  <box-icon
-                    type="solid"
-                    color="white"
-                    name={addNewProduct ? "chevron-up" : "chevron-down"}
-                  ></box-icon>
-                </Button>
               </div>
-              {addNewProduct && (
-                <Card className="m-2">
-                  <AddProductForm
-                    showModal={{}}
-                    handleClose={() => setAddNewProduct(false)}
-                    handleSave={(values) => handleSave(values, setFieldValue)}
-                  />
-                </Card>
+              {productInventory && (
+                <ProductQuantityForm
+                  productInventory={productInventory}
+                  values={values}
+                  setFieldValue={setFieldValue}
+                  handleBlur={handleBlur}
+                />
               )}
-
-              <Form.Group>
-                <FloatingLabel label="Batch number" className="mb-3">
-                  <Form.Control
-                    name="batch_number"
-                    type="text"
-                    placeholder="put batch number here"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isInvalid={errors.batch_number && touched.batch_number}
-                    value={values.batch_number}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.batch_number}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </Form.Group>
-              <Form.Group>
-                <FloatingLabel label="Expiry date" className="mb-3">
-                  <Form.Control
-                    name="expiry_date"
-                    type="text"
-                    placeholder="put expiry date here"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isInvalid={errors.expiry_date && touched.expiry_date}
-                    value={values.expiry_date}
-                  />
-
-                  <Form.Control.Feedback type="invalid">
-                    {errors.expiry_date}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </Form.Group>
-              <Form.Group>
-                <FloatingLabel label="Cost price" className="mb-3">
-                  <Form.Control
-                    name="cost_price"
-                    type="number"
-                    placeholder="put cost price here"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isInvalid={errors.cost_price && touched.cost_price}
-                    value={values.cost_price}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.cost_price}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-              </Form.Group>
-              <div className="d-flex gap-3">
-                <Form.Group style={{ "padding-top": "1px", width: "50%" }}>
-                  <FloatingLabel label="Stock" className="mb-3">
-                    <Form.Control
-                      name="stock"
-                      type="number"
-                      placeholder="put stock value here"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      isInvalid={errors.stock && touched.stock}
-                      value={values.stock}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.stock}
-                    </Form.Control.Feedback>
-                  </FloatingLabel>
-                </Form.Group>
-              </div>
 
               <div className="d-flex justify-content-end gap-4 m-4">
                 <Button variant="secondary" onClick={handleClose}>
                   Cancel
                 </Button>
-                <Button
-                  // onClick={handleProceed}
-                  type="submit"
-                  disabled={!transactionType || !isValid || !dirty}
-                >
+                <Button type="submit" disabled={!transactionType}>
                   Add to cart
                 </Button>
               </div>

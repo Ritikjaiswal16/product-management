@@ -114,7 +114,7 @@ const CustomTable = ({
   };
 
   return (
-    <Card className={`table-card ${className}`}>
+    <div className={`table-card ${className}`}>
       {isLoading && <SpinnerOverlay />}
 
       <div className="d-flex gap-3 justify-content-between align-items-center table-card-name">
@@ -164,7 +164,7 @@ const CustomTable = ({
           )}
         </div>
       )}
-    </Card>
+    </div>
   );
 };
 

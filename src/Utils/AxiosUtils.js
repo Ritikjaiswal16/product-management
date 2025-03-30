@@ -7,4 +7,4 @@ export const getHeaderOptions = (token) => ({
         }
     })
 
-export const apiURL="http://192.168.128.185:8000";
+export const apiURL="http://localhost:8000/api/v1";

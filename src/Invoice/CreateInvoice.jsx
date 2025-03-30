@@ -9,6 +9,10 @@ import axios from "axios";
 import { apiURL, getHeaderOptions } from "../Utils/AxiosUtils";
 import moment from "moment";
 import AddProductToCart from "./AddProductToCart";
+import Table from 'react-bootstrap/Table';
+import "./Invoice.css";
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const CreateInvoice = () => {
   const [searchParams, _] = useSearchParams();
@@ -36,7 +40,7 @@ const CreateInvoice = () => {
       setIsLoading(true);
       const response = (
         await axios.get(
-          `${apiURL}/api/customers/${customerId}`,
+          `${apiURL}/customers/${customerId}`,
           getHeaderOptions(token)
         )
       ).data;
@@ -85,7 +89,7 @@ const CreateInvoice = () => {
       console.log("requestBody", requestBody);
       const response = (
         await axios.put(
-          `${apiURL}/api/customers/${requestBody.id}`,
+          `${apiURL}/customers/${requestBody.id}`,
           requestBody,
           getHeaderOptions(token)
         )
@@ -111,7 +115,7 @@ const CreateInvoice = () => {
       }
       const response = (
         await axios.post(
-          `${apiURL}/api/booklog/${customerData.id}`,
+          `${apiURL}/booklog/${customerData.id}`,
           body,
           getHeaderOptions(token)
         )
@@ -156,104 +160,125 @@ const CreateInvoice = () => {
   }, []);
 
   return (
-    <div className="top-div">
+
+
+    <div className="invoice-main">
       {isLoading && <SpinnerOverlay />}
       {Object.keys(customerData)?.length ? (
         <div>
-          <DetailsAccordions
-            backButton={
-              <div
-                className="details-back-btn"
-                onClick={() => navigate("/invoices")}
-              >
-                <box-icon size="md" name="chevron-left"></box-icon>
-              </div>
-            }
-            title={
-              <div className="d-flex align-center gap-1">
-                <h4 className="pt-1">{customerData.customer_name}</h4>
-              </div>
-            }
-            // rightButton={
-            //   <div className="d-flex gap-4">
-            //     {
-            //       <>
-            //         <Button
-            //           className="customer-edit rounded-3"
-            //           onClick={() => handleSubmit()}
-            //           disabled={!isValid || !dirty}
-            //         >
-            //           Save
-            //         </Button>
-            //       </>
-            //     }
-            //   </div>
-            // }
-            body={
-              <div class="table-responsive-sm">
-                <table class="table table-borderless">
-                  <tbody>
-                    <tr>
-                      <td class="fw-bolder pb-0">Id</td>
-                      <td class="fw-bolder pb-0">Balance</td>
-                      <td class="fw-bolder pb-0"> GST Number</td>
-                      <td class="fw-bolder pb-0">Is Active</td>
-                    </tr>
-                    <tr>
-                      <td class="pt-0"> {customerData.customer_id}</td>
-                      <td class="pt-0">{customerData.customer_balance}</td>
-                      <td class="pt-0">{customerData.customer_gst}</td>
-                      <td class="pt-0">
-                        <a>
-                          {customerData.customer_is_active
-                            ? "Active"
-                            : "Disabled"}
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="fw-bolder pb-0 pt-3">Email</td>
-                      <td class="fw-bolder pb-0 pt-3">Contact Number</td>
-                      <td class="fw-bolder pb-0 pt-3" colspan="2">
-                        Adddress
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="py-0">
-                        <a>{customerData.customer_email}</a>
-                      </td>
-                      <td class="py-0">
-                        <a>{customerData.customer_contact_number}</a>
-                      </td>
-                      <td class="py-0" colspan="2">
-                        {" "}
-                        <a>{customerData.customer_address}</a>
-                      </td>
-                    </tr>
-                  </tbody>{" "}
-                </table>
-              </div>
-            }
-          ></DetailsAccordions>
+          < div className="details-back-btn" style={{ display: "flex", alignItems: "center" }} onClick={() => navigate("/invoices")}>
+            <box-icon size="md" name="chevron-left"></box-icon> <h5>Create Invoice
+            </h5>
+          </div>
+          <center> <h4>
+            Sales Invoice
+          </h4></center>
+          {/* <div className="table-responsive-sm">
+            <table className="table table-borderless">
+              <tbody>
+                <tr>
+                  <td className="fw-bolder pb-0">Bill To</td>
+                  <td className="fw-bolder pb-0">Address</td>
+                </tr>
+                <tr>
+                  <td className="pt-0">
+                    Name : {customerData.name}( {customerData.registration_id} ) <br />
+                    GSTIN : {customerData.gst} <br />
+                    PH No.: {customerData.contact_number} 
+                    </td>
+                    <td>
+                    <p style={{whiteSpace:"pre-line"}}>{customerData.address}</p>
+
+
+                  </td>
+
+
+                </tr>
+              </tbody>
+            </table>
+          </div> */}
+          <div class="table-responsive-sm">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td class="fw-bolder pb-0">Name</td>
+                  <td class="fw-bolder pb-0">Id</td>
+                  <td class="fw-bolder pb-0"> GST Number</td>
+                  <td class="fw-bolder pb-0">Current Balance</td>
+                </tr>
+                <tr>
+
+                  <td class="pt-0"> {customerData.name} </td>
+                  <td class="pt-0"> {customerData.registration_id}</td>
+                  <td class="pt-0">{customerData.gst}</td>
+                  <td class="pt-0">{customerData.balance} </td>
+                </tr>
+                <tr>
+                  <td class="fw-bolder pb-0 pt-3">Email</td>
+                  <td class="fw-bolder pb-0 pt-3"> Contact Number </td>
+                  <td class="fw-bolder pb-0 pt-3" colspan="2"> Adddress</td>
+                </tr>
+                <tr>
+                  <td class="py-0">
+                    {customerData.email}
+                  </td>
+                  <td class="py-0">{customerData.contact_number}</td>
+                  <td class="py-0" colspan="2">{customerData.address}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {showHistoryModal && (
+            <AddProductToCart handleClose={() => setShowHistoryModal(null)} />
+          )}
+
+
+
+
+          <div className="top-div">
+            {isLoading && <SpinnerOverlay />}
+
+            {showHistoryModal && (
+              <AddProductToCart handleClose={() => setShowHistoryModal(null)} />
+            )}
+            <CustomTable
+              className={""}
+              isLoading={isTableLoading}
+              title={"Items"}
+              headers={customerHistoryHeader}
+              records={customerDetail?.results}
+              totalRecords={customerDetail?.count}
+              primaryBtnHeader={"Add"}
+              primaryBtnHandler={() => setShowHistoryModal(true)}
+              pageNumber={pageNumber}
+              setPageNumber={setPagination}
+              handleSearch={handleSearch}
+            />
+          </div>
+
+
+
+          <div className="invoice-footer">
+            <InputGroup size="sm" className="mb-3">
+              <InputGroup.Text id="lable">Amount ⟨₹⟩</InputGroup.Text>
+              <Form.Control id="value" type="number" readOnly placeholder="0.0" />
+            </InputGroup>
+            <InputGroup size="sm" className="mb-3">
+              <InputGroup.Text id="lable">Paid Amount ⟨₹⟩</InputGroup.Text>
+              <Form.Control id="value" type="number" placeholder="0.0" />
+            </InputGroup>
+            <InputGroup size="sm" className="mb-3">
+              <InputGroup.Text id="lable">Invoice Total ⟨₹⟩</InputGroup.Text>
+              <Form.Control id="value" type="number" readOnly placeholder="0.0" />
+            </InputGroup>
+          </div>
         </div>
       ) : null}
-      {showHistoryModal && (
-        <AddProductToCart handleClose={() => setShowHistoryModal(null)} />
-      )}
-      <CustomTable
-        className={"history-table"}
-        isLoading={isTableLoading}
-        title={"Customer History"}
-        headers={customerHistoryHeader}
-        records={customerDetail?.results}
-        totalRecords={customerDetail?.count}
-        primaryBtnHeader={"Add"}
-        primaryBtnHandler={() => setShowHistoryModal(true)}
-        pageNumber={pageNumber}
-        setPageNumber={setPagination}
-        handleSearch={handleSearch}
-      />
-    </div>
+
+
+
+    </div >
   );
 };
 

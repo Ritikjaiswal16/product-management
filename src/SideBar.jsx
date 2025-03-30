@@ -1,9 +1,9 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "boxicons";
 import "./SideBar.css";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = ({index, hovered, setHovered}) => {
+const SideBar = ({ index, hovered, setHovered }) => {
   const useMediaQuery = (query) => {
     const [matches, setMatches] = useState(false);
 
@@ -74,7 +74,11 @@ const SideBar = ({index, hovered, setHovered}) => {
   }, [active, delay]);
 
   return (
-    <div className={`sidebar expanded`} onMouseEnter={() => setExpanded(true)} onMouseLeave={() => setExpanded(false)}>
+    <div
+      className={`sidebar expanded`}
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+    >
       {menuItems.map((item, index) => {
         return (
           <div
@@ -82,8 +86,8 @@ const SideBar = ({index, hovered, setHovered}) => {
             onMouseEnter={() => setHovered(index)}
             onMouseLeave={() => setHovered(null)}
             onClick={() => {
-                setActive(index);
-                item.onClick();
+              setActive(index);
+              item.onClick();
             }}
             key={index}
           >

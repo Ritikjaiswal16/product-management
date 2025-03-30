@@ -20,7 +20,7 @@ const AddInvoice = ({ handleClose }) => {
     try {
       const response = (
         await axios.post(
-          `${apiURL}/api/customers`,
+          `${apiURL}/customers`,
           requestBody,
           getHeaderOptions(token)
         )
@@ -53,7 +53,7 @@ const AddInvoice = ({ handleClose }) => {
     try {
       // setIsLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/customers`, {
+        await axios.get(`${apiURL}/customers`, {
           params: { page: 1, search: value },
           ...getHeaderOptions(token),
         })
@@ -77,13 +77,13 @@ const AddInvoice = ({ handleClose }) => {
           placeholder="Choose customer"
           components={makeAnimated()}
           getOptionLabel={(e) =>
-            e.customer_id +
+            e.registration_id +
             " | " +
-            e.customer_name +
+            e.name +
             " | " +
-            e.customer_address +
+            e.address +
             " | " +
-            e.customer_contact_number
+            e.contact_number
           }
           getOptionValue={(e) => e.id}
           loadOptions={handleSearch}

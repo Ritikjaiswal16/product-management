@@ -10,7 +10,7 @@ function CustomToggle({ children, eventKey }) {
     <button
       type="button"
       style={{
-        backgroundColor: "white",
+        backgroundColor:"white",
         width: "100%",
         border: "None",
         height: "100%",
@@ -23,20 +23,20 @@ function CustomToggle({ children, eventKey }) {
 }
 
 const DetailsAccordions = ({ backButton, title, rightButton, body }) => (
-  <Accordion defaultActiveKey="0">
-    <div className="basic-details-accordion">
-      <div className="d-flex justify-content-between pb-0 basic-details-heading-accordion">
+  <Accordion defaultActiveKey="0" className="basic-details-accordion">
+   
+      <div className="d-flex justify-content-between basic-details-heading-accordion">
         {backButton}
         <CustomToggle eventKey="0">{title}</CustomToggle>
         {rightButton}
       </div>
-      <Accordion.Collapse eventKey="0" className="mt-0 pt-0">
-        <div>
+      <Accordion.Collapse eventKey="0">
+        <div >
           <hr></hr>
-          {body}
+          <div className="basic-details-accordion-body">{body}</div>
+
         </div>
       </Accordion.Collapse>
-    </div>
   </Accordion>
 );
 

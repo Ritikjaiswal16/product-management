@@ -32,18 +32,18 @@ const ProductDetails = () => {
 
   const validateProduct = (values) => {
     let errors = {};
-    if (!values.product_sp_credit) {
-      errors.product_sp_credit = "Please provide credit price";
+    if (!values.sp_credit) {
+      errors.sp_credit = "Please provide credit price";
     }
-    if (!values.product_gst_percentage) {
-      errors.product_gst_percentage = "Please provide GST number";
+    if (!values.gst_percentage) {
+      errors.gst_percentage = "Please provide GST number";
     }
-    if (!values.product_sp_gst) {
-      errors.product_sp_gst =
+    if (!values.sp_gst) {
+      errors.sp_gst =
         "Please provide estimated selling price including GST";
     }
-    if (!values.product_notify_count) {
-      errors.product_notify_count =
+    if (!values.notify_count) {
+      errors.notify_count =
         "Please provide notify count to remind when reach that value";
     }
     return errors;
@@ -54,7 +54,7 @@ const ProductDetails = () => {
       setIsLoading(true);
       const response = (
         await axios.get(
-          `${apiURL}/api/products/${productId}`,
+          `${apiURL}/products/${productId}`,
           getHeaderOptions(token)
         )
       ).data;
@@ -73,15 +73,21 @@ const ProductDetails = () => {
     },
     {
       name: "Cost Price",
-      accessorKey: "cost_price",
+      accessorKey: "price",
     },
     {
       name: "Quantity",
-      accessorKey: "change",
+      accessorKey: "quantity",
+      onClick: (value) => {
+        if(value.invoice_type=="Sales Return" || value.invoice_type=="Purchase") 
+          return ( <span style={{color:"green"}}>+ {value.quantity} </span>)
+        else
+          return ( <span style={{color:"red"}}>-  &nbsp;{value.quantity} </span>)
+      },
     },
     {
-      name: "Type",
-      accessorKey: "get_change_type_display",
+      name: "Type",                                                                       
+      accessorKey: "invoice_type",
     },
     {
       name: "Batch Number",
@@ -92,7 +98,7 @@ const ProductDetails = () => {
       accessorKey: "expiry_date",
       onClick: (value) => {
         let testDateUtc = moment.utc(value.expiry_date).local();
-        return testDateUtc.format("L");
+        return testDateUtc.format("DD/MM/YYYY");
       },
     },
     {
@@ -100,29 +106,25 @@ const ProductDetails = () => {
       accessorKey: "date",
       onClick: (value) => {
         let testDateUtc = moment.utc(value.date).local();
-        return testDateUtc.format("DD/MM/YYYY, h:m");
+        return testDateUtc.format("DD/MM/YYYY, hh:mm A");
       },
-    },
-    {
-      name: "Description",
-      accessorKey: "description",
     },
   ]);
 
   const handleSave = async (requestBody) => {
     const body = {
       ...requestBody,
-      product_notify_count: requestBody.product_notify_count,
-      product_gst_percentage: requestBody.product_gst_percentage,
-      product_sp_gst: requestBody.product_sp_gst,
-      product_sp_credit: requestBody.product_sp_credit,
+      notify_count: requestBody.notify_count,
+      gst_percentage: requestBody.gst_percentage,
+      sp_gst: requestBody.sp_gst,
+      sp_credit: requestBody.sp_credit,
     };
     try {
       setIsLoading(true);
       console.log("requestBody", requestBody);
       const response = (
         await axios.put(
-          `${apiURL}/api/products/${requestBody.product_id}`,
+          `${apiURL}/products/${requestBody.id}`,
           body,
           getHeaderOptions(token)
         )
@@ -143,7 +145,7 @@ const ProductDetails = () => {
     try {
       setIsTableLoading(true);
       const response = (
-        await axios.get(`${apiURL}/api/products/logs/${productId}`, {
+        await axios.get(`${apiURL}/invenotrylogs/product/${productId}`, {
           params: { page: pageNumber || 1, search: searchText },
           ...getHeaderOptions(token),
         })
@@ -200,7 +202,7 @@ const ProductDetails = () => {
                     }
                     title={
                       <Form.Group className="d-flex align-center gap-1">
-                        <h4 className="pt-1">{productData.product_name}</h4>
+                        <h4 className="pt-1">{productData.name}</h4>
                       </Form.Group>
                     }
                     rightButton={
@@ -247,16 +249,16 @@ const ProductDetails = () => {
                             <tr>
                               <td class="pt-0">
                                 {" "}
-                                {productData.product_manufacturer}
+                                {productData.manufacturer}
                               </td>
-                              <td class="pt-0">{productData.product_hsn}</td>
+                              <td class="pt-0">{productData.hsn}</td>
                               <td class="pt-0">
-                                {productData.product_net_quantity +
+                                {productData.net_quantity +
                                   " " +
-                                  productData.product_measure_unit}
+                                  productData.measure_unit}
                               </td>
                               <td class="pt-0">
-                                {productData.product_total_count}
+                                {productData.total_count}
                               </td>
                             </tr>
                             <tr>
@@ -271,22 +273,22 @@ const ProductDetails = () => {
                                   <>
                                     <Form.Control
                                       className="border-0 shadow-none product-value"
-                                      name="product_sp_gst"
+                                      name="sp_gst"
                                       type="number"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       isInvalid={
-                                        errors.product_sp_gst &&
-                                        touched.product_sp_gst
+                                        errors.sp_gst &&
+                                        touched.sp_gst
                                       }
-                                      value={values.product_sp_gst}
+                                      value={values.sp_gst}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {errors.product_sp_gst}
+                                      {errors.sp_gst}
                                     </Form.Control.Feedback>
                                   </>
                                 ) : (
-                                  <a>{productData.product_sp_gst}</a>
+                                  <a>{productData.sp_gst}</a>
                                 )}
                               </td>
                               <td class="py-0">
@@ -294,22 +296,22 @@ const ProductDetails = () => {
                                   <>
                                     <Form.Control
                                       className="border-0 shadow-none product-value"
-                                      name="product_sp_credit"
+                                      name="sp_credit"
                                       type="number"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       isInvalid={
-                                        errors.product_sp_credit &&
-                                        touched.product_sp_credit
+                                        errors.sp_credit &&
+                                        touched.sp_credit
                                       }
-                                      value={values.product_sp_credit}
+                                      value={values.sp_credit}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {errors.product_sp_credit}
+                                      {errors.sp_credit}
                                     </Form.Control.Feedback>
                                   </>
                                 ) : (
-                                  <a>{productData.product_sp_credit}</a>
+                                  <a>{productData.sp_credit}</a>
                                 )}
                               </td>
                               <td class="py-0">
@@ -317,22 +319,22 @@ const ProductDetails = () => {
                                   <>
                                     <Form.Control
                                       className="border-0 shadow-none product-value"
-                                      name="product_gst_percentage"
+                                      name="gst_percentage"
                                       type="number"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       isInvalid={
-                                        errors.product_gst_percentage &&
-                                        touched.product_gst_percentage
+                                        errors.gst_percentage &&
+                                        touched.gst_percentage
                                       }
-                                      value={values.product_gst_percentage}
+                                      value={values.gst_percentage}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {errors.product_gst_percentage}
+                                      {errors.gst_percentage}
                                     </Form.Control.Feedback>
                                   </>
                                 ) : (
-                                  <a>{productData.product_gst_percentage}</a>
+                                  <a>{productData.gst_percentage}</a>
                                 )}
                               </td>
                               <td class="py-0">
@@ -340,22 +342,22 @@ const ProductDetails = () => {
                                   <>
                                     <Form.Control
                                       className="border-0 shadow-none product-value"
-                                      name="product_notify_count"
+                                      name="notify_count"
                                       type="number"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       isInvalid={
-                                        errors.product_notify_count &&
-                                        touched.product_notify_count
+                                        errors.notify_count &&
+                                        touched.notify_count
                                       }
-                                      value={values.product_notify_count}
+                                      value={values.notify_count}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                      {errors.product_notify_count}
+                                      {errors.notify_count}
                                     </Form.Control.Feedback>
                                   </>
                                 ) : (
-                                  <a>{productData.product_notify_count}</a>
+                                  <a>{productData.notify_count}</a>
                                 )}
                               </td>
                             </tr>

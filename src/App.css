@@ -1,16 +1,19 @@
 .app{
-    background-color: rgb(184, 197, 211);
+    background-color: #eceff7 !important;
     display:flex; 
     flex-direction: column;
     height: 100vh;
 }
+
 .formOnImage{
     z-index: 100;
     position: absolute;
 }
+
 .top-bar{
     width: 100%;
 }
+
 .main-container{
     margin: 1% ;
     width: 98%;
@@ -21,22 +24,12 @@
     height: calc(96% - 74px) !important;
 }
 
-
 .details-back-btn:hover{
     cursor: pointer !important;
 }
 
-
-
 .set-max-width{
     max-width: 100% !important;
-}
-
-.brand-name{
-    margin-left: 1rem;
-    font-stretch: expanded;
-    font-size: 2rem;
-    font-weight: 800;
 }
 
 .profile{
@@ -50,6 +43,7 @@
     display:flex; 
     flex-direction: column;
 }
+
 button{
     height: 38px;
     font-weight: 570 !important;
@@ -62,18 +56,61 @@ td{
 .carousel-inner {
     padding-bottom: 100lvh;
     overflow: hidden !important; 
-  }
-  
-  .carousel-item {
+}
+
+.carousel-item {
     position: absolute !important; 
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-  }
-  
-  .carousel-item img {
+}
+
+.carousel-item img {
     height: 100%; 
     object-fit: cover; 
-  }
+}
 
+a {
+    text-decoration: none;
+}
+
+.brand-main{
+    display: inline;
+    flex-direction: column;
+}
+
+.brand-img { 
+    height: 50px; 
+    width: 50px; 
+    float: left;  
+}
+
+.brand-title{
+    font-weight: 700;
+    font-size: 25px;
+}
+.brand-description{
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 0%;
+    color: gray;
+    margin-top: -5px;
+
+    float: right;
+}
+.brand-text{
+    margin-left: 55px ;
+}
+
+.glass-card, .glass-card input, .glass-card textarea{
+background: rgba(255, 255, 255, 0.19) !important;
+border-radius: 16px !important;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+backdrop-filter: blur(9.8px) !important;
+-webkit-backdrop-filter: blur(9.8px) !important;
+}
+
+.carousel-indicators button.active::before{
+    background-color: transparent;
+}

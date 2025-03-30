@@ -20,30 +20,28 @@ const AddCustomerModal = ({ showModal, setShowModal, handleSave }) => {
 export const AddCustomerForm = ({ showModal, handleClose, handleSave }) => {
   const validate = (values) => {
     let errors = {};
-    if (!values.customer_name) {
-      errors.customer_name = "Customer Name cannot be empty";
+    if (!values.name) {
+      errors.name = "Customer Name cannot be empty";
     }
-    if (!values.customer_address) {
-      errors.customer_address = "Please provide address of customer";
+    if (!values.address) {
+      errors.address = "Please provide address of customer";
     }
-    if (!values.customer_contact_number) {
-      errors.customer_contact_number = "Please contact number of customer";
-    } else if (values.customer_contact_number.length !== 10) {
-      errors.customer_contact_number = "Contact Number should be of 10 digits";
-    }
-    if (
-      values.customer_email &&
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.customer_email)
-    ) {
-      errors.customer_email = "Email should be of valid format";
+    if (!values.contact_number) {
+      errors.contact_number = "Please contact number of customer";
+    } else if (values.contact_number.length !== 10) {
+      errors.contact_number = "Contact Number should be of 10 digits";
     }
     if (
-      values.customer_gst &&
-      !/\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/.test(
-        values.customer_gst
-      )
+      values.email &&
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
     ) {
-      errors.customer_gst = "Please provide valid GST number";
+      errors.email = "Email should be of valid format";
+    }
+    if (
+      values.gst &&
+      !/\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/.test(values.gst)
+    ) {
+      errors.gst = "Please provide valid GST number";
     }
 
     return errors;
@@ -71,85 +69,80 @@ export const AddCustomerForm = ({ showModal, handleClose, handleSave }) => {
               <Form.Group>
                 <FloatingLabel label="Customer Name" className="mb-3">
                   <Form.Control
-                    name="customer_name"
+                    name="name"
                     type="text"
                     placeholder="some customer name"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    isInvalid={errors.customer_name && touched.customer_name}
-                    value={values.customer_name}
+                    isInvalid={errors.name && touched.name}
+                    value={values.name}
                     autoFocus
                   />
 
                   <Form.Control.Feedback type="invalid">
-                    {errors.customer_name}
+                    {errors.name}
                   </Form.Control.Feedback>
                 </FloatingLabel>
               </Form.Group>
               <Form.Group>
                 <FloatingLabel label="Customer Address" className="mb-3">
                   <Form.Control
-                    name="customer_address"
+                    name="address"
                     type="text"
                     placeholder="some customer name"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    isInvalid={
-                      errors.customer_address && touched.customer_address
-                    }
-                    value={values.customer_address}
+                    isInvalid={errors.address && touched.address}
+                    value={values.address}
                   />
 
                   <Form.Control.Feedback type="invalid">
-                    {errors.customer_address}
+                    {errors.address}
                   </Form.Control.Feedback>
                 </FloatingLabel>
               </Form.Group>
               <Form.Group>
                 <FloatingLabel label="Contact Number" className="mb-3">
                   <Form.Control
-                    name="customer_contact_number"
+                    name="contact_number"
                     type="text"
                     placeholder="45HSNU56"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    isInvalid={
-                      errors.customer_contact_number &&
-                      touched.customer_contact_number
-                    }
-                    value={values.customer_contact_number}
+                    isInvalid={errors.contact_number && touched.contact_number}
+                    value={values.contact_number}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.customer_contact_number}
+                    {errors.contact_number}
                   </Form.Control.Feedback>
                 </FloatingLabel>
               </Form.Group>
               <Form.Group>
                 <FloatingLabel label="GST Number" className="mb-3">
                   <Form.Control
-                    name="customer_gst"
+                    name="gst"
                     type="text"
                     placeholder="45HSNU56"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    isInvalid={errors.customer_gst && touched.customer_gst}
-                    value={values.customer_gst}
+                    isInvalid={errors.gst && touched.gst}
+                    value={values.gst}
                   />
                 </FloatingLabel>
               </Form.Group>
               <Form.Group>
                 <FloatingLabel label="Customer Email" className="mb-3">
                   <Form.Control
-                    name="customer_email"
+                    name="email"
                     type="text"
                     placeholder="abc@mail.com"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    isInvalid={errors.customer_email && touched.customer_email}
-                    value={values.customer_email}
+                    isInvalid={errors.email && touched.email}
+                    value={values.email}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.customer_email}
+                    {errors.email}
                   </Form.Control.Feedback>
                 </FloatingLabel>
               </Form.Group>
