@@ -2,6 +2,7 @@
 This repository contains frontend code for **InWeXpert** - A joint project with [Nikhil Patel](https://github.com/NIKHILP16).
 
 The backend Stays Private at: https://github.com/NIKHILP16/InWeXpert (Python backend with docker setup).
+![InWeXpertGithub](https://github.com/user-attachments/assets/d32e3dc2-fdca-4590-aee4-adc1e454dd8f)
 
 
 [InWeXpertGlimpse.webm](https://github.com/user-attachments/assets/865226a2-56b5-461c-af9a-4afc1fa32c05)
